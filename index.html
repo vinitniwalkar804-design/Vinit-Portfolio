@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Vinit Niwalkar | Full Stack Developer & AI / Data Science Engineer</title>
+
+  <meta name="description" content="Vinit Niwalkar — Full Stack Developer & AI / Data Science Engineer. Building intelligent, scalable and user-focused digital experiences with the MERN stack, REST APIs and AI-assisted modules." />
+  <meta name="author" content="Vinit Niwalkar" />
+  <meta name="theme-color" content="#08090f" />
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Vinit Niwalkar | Full Stack Developer & AI / Data Science Engineer" />
+  <meta property="og:description" content="Building intelligent, scalable and user-focused digital experiences with the MERN stack, REST APIs and AI-assisted modules." />
+  <meta property="og:site_name" content="Vinit Niwalkar" />
+
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Vinit Niwalkar | Full Stack Developer & AI / Data Science Engineer" />
+  <meta name="twitter:description" content="Building intelligent, scalable and user-focused digital experiences." />
+
+  <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+  <link rel="apple-touch-icon" href="favicon.svg" />
+
+  <!-- Theme pre-set (avoids flash of the wrong theme) -->
+  <script>
+    (function () {
+      try {
+        var saved = localStorage.getItem('vn-theme');
+        if (saved === 'light') document.documentElement.setAttribute('data-theme', 'light');
+      } catch (e) {}
+    })();
+  </script>
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <a class="skip-link" href="#home">Skip to content</a>
+
+  <!-- Animated background -->
+  <div class="bg" aria-hidden="true">
+    <div class="bg-grid"></div>
+    <div class="bg-orb bg-orb--a"></div>
+    <div class="bg-orb bg-orb--b"></div>
+    <div class="bg-orb bg-orb--c"></div>
+  </div>
+
+  <!-- ============ NAVIGATION ============ -->
+  <header class="site-header" id="siteHeader">
+    <div class="container nav-wrap">
+      <a class="brand" href="#home" aria-label="Vinit Niwalkar — home">
+        <span class="brand-mark">VN</span><span class="brand-dot">.</span>
+      </a>
+
+      <nav class="nav" id="primaryNav" aria-label="Primary navigation">
+        <ul class="nav-list">
+          <li class="nav-indicator" id="navIndicator" aria-hidden="true"></li>
+          <li class="nav-item"><a class="nav-link is-active" href="#home" data-nav>Home</a></li>
+          <li class="nav-item"><a class="nav-link" href="#about" data-nav>About</a></li>
+          <li class="nav-item"><a class="nav-link" href="#skills" data-nav>Skills</a></li>
+          <li class="nav-item"><a class="nav-link" href="#projects" data-nav>Projects</a></li>
+          <li class="nav-item"><a class="nav-link" href="#experience" data-nav>Experience</a></li>
+          <li class="nav-item"><a class="nav-link" href="#education" data-nav>Education</a></li>
+          <li class="nav-item"><a class="nav-link" href="#certificates" data-nav>Certificates</a></li>
+          <li class="nav-item"><a class="nav-link" href="#contact" data-nav>Contact</a></li>
+        </ul>
+      </nav>
+
+      <div class="nav-actions">
+        <button class="icon-btn theme-toggle" id="themeToggle" type="button" aria-label="Toggle light and dark theme" title="Toggle theme">
+          <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <circle cx="12" cy="12" r="4" /><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41" />
+          </svg>
+          <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
+          </svg>
+        </button>
+
+        <button class="icon-btn menu-toggle" id="menuToggle" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="primaryNav">
+          <svg class="icon-menu" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+            <path d="M3 6h18M3 12h18M3 18h18" />
+          </svg>
+          <svg class="icon-close" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+            <path d="M18 6 6 18M6 6l12 12" />
+          </svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main id="main">
+    <!-- ============ HERO ============ -->
+    <section class="hero section" id="home" aria-label="Introduction">
+      <div class="container hero-grid">
+        <div class="hero-copy">
+          <span class="hero-glow" id="heroGlow" aria-hidden="true"></span>
+          <span class="availability reveal" data-reveal>
+            <span class="availability-dot" aria-hidden="true"></span>
+            Open to opportunities
+          </span>
+
+          <h1 class="hero-name reveal" data-reveal style="--d:.05s">Vinit Niwalkar</h1>
+
+          <p class="hero-role reveal" data-reveal style="--d:.1s">
+            Full Stack Developer <span class="hero-role-accent">& AI / Data Science Engineer</span>
+          </p>
+
+          <p class="hero-tagline reveal" data-reveal style="--d:.15s">
+            "Building intelligent, scalable and user-focused digital experiences."
+          </p>
+
+          <div class="hero-actions reveal" data-reveal style="--d:.2s">
+            <a class="btn btn-primary" href="#projects">
+              View My Work
+              <span class="btn-arrow-track" aria-hidden="true">
+                <svg class="btn-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6" /></svg>
+                <svg class="btn-arrow btn-arrow--enter" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6" /></svg>
+              </span>
+            </a>
+            <a class="btn btn-ghost" href="/assets/Vinit-Niwalkar-Resume.pdf" id="downloadResume" download>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12M7 10l5 5 5-5M4 21h16" /></svg>
+              Download Resume
+            </a>
+          </div>
+
+          <div class="hero-socials reveal" data-reveal style="--d:.25s" id="heroSocials">
+            <a class="social-link" href="https://github.com/vinitniwalkar804-design" target="_blank" rel="noopener noreferrer" aria-label="GitHub profile">
+              <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>
+            </a>
+            <a class="social-link" href="https://www.linkedin.com/in/vinit-niwalkar-ai" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn profile">
+              <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+            </a>
+          </div>
+        </div>
+
+        <div class="hero-visual reveal" data-reveal="zoom" style="--d:.15s">
+          <div class="photo-frame" role="img" aria-label="Portrait of Vinit Niwalkar">
+            <div class="photo-ring" aria-hidden="true"></div>
+            <img class="photo" src="images/profile/profile.jpg" alt="Vinit Niwalkar — Full Stack Developer & AI / Data Science Engineer" width="560" height="560" fetchpriority="high" decoding="async" />
+          </div>
+          <div class="float-chip float-chip--a" aria-hidden="true">
+            <span class="chip-icon chip-icon--mern"></span> MERN Stack
+          </div>
+          <div class="float-chip float-chip--b" aria-hidden="true">
+            <span class="chip-icon chip-icon--ai"></span> AI / DS
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ ABOUT ============ -->
+    <section class="section" id="about" aria-labelledby="about-title">
+      <div class="container">
+        <div class="section-head reveal" data-reveal>
+          <span class="section-eyebrow">01 &middot; About</span>
+          <h2 class="section-title" id="about-title">About Me</h2>
+        </div>
+
+        <div class="about-grid">
+          <div class="about-card reveal" data-reveal>
+            <p class="about-lead">Full Stack Web Developer with a strong AI / Data Science foundation.</p>
+            <p class="about-text" id="aboutSummary">
+              I build full-stack web applications with the MERN stack — combining React.js, Node.js, Express.js and MongoDB into role-based systems that integrate authentication, real-time features and AI-assisted modules. My foundation in Data Structures &amp; Algorithms, REST API design and version control keeps my work structured, testable and easy to maintain.
+            </p>
+            <p class="about-text" id="aboutSecondary">
+              As an AI &amp; Data Science student, I bring a data-driven mindset to software development — building intelligent, scalable and user-focused products that turn ideas into useful, working systems.
+            </p>
+          </div>
+
+          <div class="about-meta reveal" data-reveal="right" style="--d:.1s">
+            <ul class="about-facts">
+              <li>
+                <span class="fact-label">Focus</span>
+                <span class="fact-value">Full Stack + AI Assisted Apps</span>
+              </li>
+              <li>
+                <span class="fact-label">Stack</span>
+                <span class="fact-value">MERN &middot; REST APIs &middot; OpenCV</span>
+              </li>
+              <li>
+                <span class="fact-label">Foundations</span>
+                <span class="fact-value">DSA &middot; OOP &middot; Git</span>
+              </li>
+              <li>
+                <span class="fact-label">Education</span>
+                <span class="fact-value">B.Tech — AI &amp; Data Science</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="about-stats reveal" data-reveal id="aboutStats">
+          <div class="stat">
+            <span class="stat-num" data-count="0">0</span>
+            <span class="stat-suffix">+</span>
+            <span class="stat-label" data-stat="projects">Projects</span>
+          </div>
+          <div class="stat">
+            <span class="stat-num" data-count="0">0</span>
+            <span class="stat-suffix">+</span>
+            <span class="stat-label" data-stat="internships">Internships</span>
+          </div>
+          <div class="stat">
+            <span class="stat-num" data-count="0">0</span>
+            <span class="stat-suffix">+</span>
+            <span class="stat-label" data-stat="certificates">Certifications</span>
+          </div>
+          <div class="stat">
+            <span class="stat-num" data-count="0">0</span>
+            <span class="stat-label" data-stat="stack">Tech Categories</span>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="section" id="skills" aria-labelledby="skills-title">
+      <div class="container">
+        <div class="section-head reveal" data-reveal>
+          <span class="section-eyebrow">02 &middot; Skills</span>
+          <h2 class="section-title" id="skills-title">Tech Stack</h2>
+          <p class="section-sub">The tools and technologies I work with across the full stack.</p>
+        </div>
+        <div class="skills-grid" id="skillsGrid"></div>
+      </div>
+    </section>
+
+    <!-- ============ PROJECTS ============ -->
+    <section class="section" id="projects" aria-labelledby="projects-title">
+      <div class="container">
+        <div class="section-head reveal" data-reveal>
+          <span class="section-eyebrow">03 &middot; Projects</span>
+          <h2 class="section-title" id="projects-title">Featured Projects</h2>
+          <p class="section-sub">Full-stack products I've designed, built and shipped.</p>
+        </div>
+
+        <div class="modal-hint reveal" data-reveal>Click a project to open its case study.</div>
+
+        <div class="projects-list" id="projectsList"></div>
+      </div>
+    </section>
+
+    <!-- ============ EXPERIENCE ============ -->
+    <section class="section" id="experience" aria-labelledby="experience-title">
+      <div class="container">
+        <div class="section-head reveal" data-reveal>
+          <span class="section-eyebrow">04 &middot; Experience</span>
+          <h2 class="section-title" id="experience-title">Internships &amp; Experience</h2>
+          <p class="section-sub">Structured virtual programs that shaped my engineering practice.</p>
+        </div>
+        <div class="timeline" id="experienceTimeline"></div>
+      </div>
+    </section>
+
+    <!-- ============ EDUCATION ============ -->
+    <section class="section" id="education" aria-labelledby="education-title">
+      <div class="container">
+        <div class="section-head reveal" data-reveal>
+          <span class="section-eyebrow">05 &middot; Education</span>
+          <h2 class="section-title" id="education-title">Education</h2>
+        </div>
+        <div class="education-grid" id="educationGrid"></div>
+      </div>
+    </section>
+
+    <!-- ============ CERTIFICATES ============ -->
+    <section class="section" id="certificates" aria-labelledby="certificates-title">
+      <div class="container">
+        <div class="section-head reveal" data-reveal>
+          <span class="section-eyebrow">06 &middot; Certificates</span>
+          <h2 class="section-title" id="certificates-title">Certifications</h2>
+          <p class="section-sub">Continuous learning across AI, development and professional skills.</p>
+        </div>
+        <div class="cert-grid" id="certGrid"></div>
+      </div>
+    </section>
+
+    <!-- ============ GITHUB ============ -->
+    <section class="section" id="github" aria-labelledby="github-title">
+      <div class="container">
+        <div class="section-head reveal" data-reveal>
+          <span class="section-eyebrow">07 &middot; Development</span>
+          <h2 class="section-title" id="github-title">GitHub</h2>
+        </div>
+
+        <div class="github-card reveal" data-reveal>
+          <div class="github-card-glow" aria-hidden="true"></div>
+          <div class="github-card-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>
+          </div>
+          <div class="github-card-body">
+            <p class="github-card-kicker">Where I push what I build</p>
+            <h3 class="github-card-title">vinitniwalkar804-design</h3>
+            <p class="github-card-text">Browse my repositories — full-stack applications, AI-assisted modules and experiment-driven frontend work.</p>
+            <div class="github-links">
+              <a class="btn btn-primary" href="https://github.com/vinitniwalkar804-design" target="_blank" rel="noopener noreferrer">
+                Visit GitHub Profile
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9" /></svg>
+              </a>
+              <span class="github-stat" id="githubStat" hidden></span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ CONTACT ============ -->
+    <section class="section" id="contact" aria-labelledby="contact-title">
+      <div class="container">
+        <div class="section-head reveal" data-reveal>
+          <span class="section-eyebrow">08 &middot; Contact</span>
+          <h2 class="section-title" id="contact-title">Let's Build Something</h2>
+          <p class="section-sub">I'm always open to internships, collaborations and interesting problems.</p>
+        </div>
+
+        <div class="contact-grid">
+          <div class="contact-info reveal" data-reveal>
+            <p class="contact-info-text">Have a project, an internship opportunity, or just want to connect? Drop a message — I read everything that lands in my inbox.</p>
+
+            <a class="contact-row" href="mailto:vinitniwalkar804@gmail.com">
+              <span class="contact-row-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="4" width="20" height="16" rx="2" /><path d="m2 7 10 6L22 7" /></svg>
+              </span>
+              <span class="contact-row-meta">
+                <span class="contact-row-label">Email</span>
+                <span class="contact-row-value">vinitniwalkar804@gmail.com</span>
+              </span>
+            </a>
+
+            <a class="contact-row" href="https://www.linkedin.com/in/vinit-niwalkar-ai" target="_blank" rel="noopener noreferrer">
+              <span class="contact-row-icon">
+                <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+              </span>
+              <span class="contact-row-meta">
+                <span class="contact-row-label">LinkedIn</span>
+                <span class="contact-row-value">/in/vinit-niwalkar-ai</span>
+              </span>
+            </a>
+
+            <a class="contact-row" href="https://github.com/vinitniwalkar804-design" target="_blank" rel="noopener noreferrer">
+              <span class="contact-row-icon">
+                <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>
+              </span>
+              <span class="contact-row-meta">
+                <span class="contact-row-label">GitHub</span>
+                <span class="contact-row-value">/vinitniwalkar804-design</span>
+              </span>
+            </a>
+          </div>
+
+          <form class="contact-form reveal" id="contactForm" novalidate data-reveal="right" style="--d:.1s">
+            <div class="field">
+              <label class="field-label" for="contactName">Name</label>
+              <input class="field-input" type="text" id="contactName" name="name" autocomplete="name" placeholder="Your name" required />
+              <p class="field-error" id="nameError" hidden></p>
+            </div>
+
+            <div class="field">
+              <label class="field-label" for="contactEmail">Email</label>
+              <input class="field-input" type="email" id="contactEmail" name="email" autocomplete="email" placeholder="you@example.com" required />
+              <p class="field-error" id="emailError" hidden></p>
+            </div>
+
+            <div class="field">
+              <label class="field-label" for="contactMessage">Message</label>
+              <textarea class="field-input" id="contactMessage" name="message" rows="5" placeholder="Tell me about your project or opportunity…" required></textarea>
+              <p class="field-error" id="messageError" hidden></p>
+            </div>
+
+            <button class="btn btn-primary btn-block" type="submit" id="contactSubmit">
+              <span class="btn-label">Send Message</span>
+              <span class="btn-spinner" aria-hidden="true"></span>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m22 2-7 20-4-9-9-4z" /></svg>
+            </button>
+
+            <p class="form-status" id="formStatus" role="status" aria-live="polite"></p>
+          </form>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ============ FOOTER ============ -->
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <div class="footer-brand">
+        <p class="footer-name">Vinit Niwalkar</p>
+        <p class="footer-role">Full Stack Developer &middot; AI / Data Science Engineer</p>
+      </div>
+
+      <div class="footer-socials">
+        <a class="social-link" href="https://github.com/vinitniwalkar804-design" target="_blank" rel="noopener noreferrer" aria-label="GitHub">
+          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>
+        </a>
+        <a class="social-link" href="https://www.linkedin.com/in/vinit-niwalkar-ai" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
+          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+        </a>
+        <a class="social-link" href="mailto:vinitniwalkar804@gmail.com" aria-label="Email">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="4" width="20" height="16" rx="2" /><path d="m2 7 10 6L22 7" /></svg>
+        </a>
+      </div>
+
+      <p class="footer-copy">
+        &copy; <span id="year">2026</span> Vinit Niwalkar &middot; Built with HTML, CSS, JavaScript, Node.js &amp; MongoDB.
+      </p>
+    </div>
+  </footer>
+
+  <!-- ============ PROJECT MODAL ============ -->
+  <dialog class="modal" id="projectModal" aria-labelledby="modalTitle">
+    <div class="modal-shell">
+      <button class="modal-close icon-btn" type="button" id="modalClose" aria-label="Close case study">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12" /></svg>
+      </button>
+      <div class="modal-content" id="modalContent"></div>
+    </div>
+  </dialog>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <div class="cursor-dot" id="cursorDot" aria-hidden="true"></div>
+  <div class="cursor-ring" id="cursorRing" aria-hidden="true"></div>
+
+  <script src="js/main.js" defer></script>
+</body>
+</html>
