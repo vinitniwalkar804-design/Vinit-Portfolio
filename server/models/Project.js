@@ -19,9 +19,11 @@ const projectSchema = new mongoose.Schema({
     overview: { type: String, default: '' },
     problem: { type: String, default: '' },
     solution: { type: String, default: '' },
+    architecture: { type: String, default: '' },
     featuredFeatures: [{ type: String }],
     techStack: [{ type: String }],
-    role: { type: String, default: '' }
+    role: { type: String, default: '' },
+    impact: { type: String, default: '' }
   },
   order: { type: Number, default: 0 }
 }, { timestamps: true });

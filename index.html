@@ -60,7 +60,7 @@
       <nav class="nav" id="primaryNav" aria-label="Primary navigation">
         <ul class="nav-list">
           <li class="nav-indicator" id="navIndicator" aria-hidden="true"></li>
-          <li class="nav-item"><a class="nav-link is-active" href="#home" data-nav>Home</a></li>
+          <li class="nav-item"><a class="nav-link is-active" href="#home" data-nav aria-current="true">Home</a></li>
           <li class="nav-item"><a class="nav-link" href="#about" data-nav>About</a></li>
           <li class="nav-item"><a class="nav-link" href="#skills" data-nav>Skills</a></li>
           <li class="nav-item"><a class="nav-link" href="#projects" data-nav>Projects</a></li>
@@ -91,6 +91,7 @@
         </button>
       </div>
     </div>
+    <div class="scroll-progress" id="scrollProgress" aria-hidden="true"></div>
   </header>
 
   <main id="main">
@@ -151,6 +152,10 @@
           </div>
         </div>
       </div>
+      <a class="hero-scroll" href="#about" aria-label="Scroll to the about section">
+        <span class="hero-scroll-line" aria-hidden="true"></span>
+        <span class="hero-scroll-text">Scroll</span>
+      </a>
     </section>
 
     <!-- ============ ABOUT ============ -->
@@ -170,6 +175,16 @@
             <p class="about-text" id="aboutSecondary">
               As an AI &amp; Data Science student, I bring a data-driven mindset to software development — building intelligent, scalable and user-focused products that turn ideas into useful, working systems.
             </p>
+            <ul class="about-chips" aria-label="Focus areas">
+              <li>Full Stack Development</li>
+              <li>MERN</li>
+              <li>AI / ML</li>
+              <li>Data Science</li>
+              <li>MongoDB</li>
+              <li>REST APIs</li>
+              <li>DSA</li>
+              <li>Problem Solving</li>
+            </ul>
           </div>
 
           <div class="about-meta reveal" data-reveal="right" style="--d:.1s">
@@ -224,6 +239,7 @@
           <h2 class="section-title" id="skills-title">Tech Stack</h2>
           <p class="section-sub">The tools and technologies I work with across the full stack.</p>
         </div>
+        <div class="skills-filter" id="skillsFilter" hidden></div>
         <div class="skills-grid" id="skillsGrid"></div>
       </div>
     </section>
@@ -255,11 +271,30 @@
       </div>
     </section>
 
+    <!-- ============ CURRENTLY LEARNING ============ -->
+    <section class="section section--compact" id="learning" aria-labelledby="learning-title">
+      <div class="container">
+        <div class="section-head reveal" data-reveal>
+          <span class="section-eyebrow">05 &middot; Learning</span>
+          <h2 class="section-title" id="learning-title">Currently Learning</h2>
+          <p class="section-sub">Where I'm deliberately sharpening my skill set right now.</p>
+        </div>
+        <ul class="learning-list" id="learningList">
+          <li class="learning-chip" data-reveal style="--d:0ms">Advanced Full-Stack Development</li>
+          <li class="learning-chip" data-reveal style="--d:60ms">AI Engineering</li>
+          <li class="learning-chip" data-reveal style="--d:120ms">Machine Learning</li>
+          <li class="learning-chip" data-reveal style="--d:180ms">System Design</li>
+          <li class="learning-chip" data-reveal style="--d:240ms">Cloud Deployment</li>
+          <li class="learning-chip" data-reveal style="--d:300ms">DSA</li>
+        </ul>
+      </div>
+    </section>
+
     <!-- ============ EDUCATION ============ -->
     <section class="section" id="education" aria-labelledby="education-title">
       <div class="container">
         <div class="section-head reveal" data-reveal>
-          <span class="section-eyebrow">05 &middot; Education</span>
+          <span class="section-eyebrow">06 &middot; Education</span>
           <h2 class="section-title" id="education-title">Education</h2>
         </div>
         <div class="education-grid" id="educationGrid"></div>
@@ -270,11 +305,67 @@
     <section class="section" id="certificates" aria-labelledby="certificates-title">
       <div class="container">
         <div class="section-head reveal" data-reveal>
-          <span class="section-eyebrow">06 &middot; Certificates</span>
+          <span class="section-eyebrow">07 &middot; Certificates</span>
           <h2 class="section-title" id="certificates-title">Certifications</h2>
-          <p class="section-sub">Continuous learning across AI, development and professional skills.</p>
+          <p class="section-sub">My technical learning, internships and certifications</p>
         </div>
+
+        <div class="cert-toolbar reveal" data-reveal>
+          <div class="cert-search">
+            <span class="cert-search-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+            </span>
+            <input type="search" id="certSearch" class="cert-search-input" placeholder="Search by title, organization or category" aria-label="Search certificates by title, organization or category" autocomplete="off" />
+          </div>
+          <div class="cert-filters" id="certFilters" role="group" aria-label="Filter certificates by category"></div>
+          <p class="cert-verify" id="certVerify" hidden role="status"></p>
+          <button type="button" class="cert-reset" id="certReset" hidden aria-label="Clear certificate search and filters">Clear filters</button>
+        </div>
+
         <div class="cert-grid" id="certGrid"></div>
+      </div>
+    </section>
+
+    <!-- ============ HOW I BUILD ============ -->
+    <section class="section" id="process" aria-labelledby="process-title">
+      <div class="container">
+        <div class="section-head reveal" data-reveal>
+          <span class="section-eyebrow">08 &middot; Process</span>
+          <h2 class="section-title" id="process-title">How I Build</h2>
+          <p class="section-sub">A simple, disciplined process I follow on every product.</p>
+        </div>
+        <ol class="process-grid">
+          <li class="process-step" data-reveal style="--d:0ms">
+            <span class="process-num" aria-hidden="true">01</span>
+            <h3 class="process-title">Discover</h3>
+            <p class="process-desc">Understand the problem, the users and the constraints before writing code.</p>
+          </li>
+          <li class="process-step" data-reveal style="--d:70ms">
+            <span class="process-num" aria-hidden="true">02</span>
+            <h3 class="process-title">Design</h3>
+            <p class="process-desc">Map the architecture, the data flow and the interface.</p>
+          </li>
+          <li class="process-step" data-reveal style="--d:140ms">
+            <span class="process-num" aria-hidden="true">03</span>
+            <h3 class="process-title">Build</h3>
+            <p class="process-desc">Implement in clean, testable layers across the stack.</p>
+          </li>
+          <li class="process-step" data-reveal style="--d:210ms">
+            <span class="process-num" aria-hidden="true">04</span>
+            <h3 class="process-title">Test</h3>
+            <p class="process-desc">Validate logic, edge cases and responsiveness.</p>
+          </li>
+          <li class="process-step" data-reveal style="--d:280ms">
+            <span class="process-num" aria-hidden="true">05</span>
+            <h3 class="process-title">Deploy</h3>
+            <p class="process-desc">Ship and monitor with the infrastructure the project needs.</p>
+          </li>
+          <li class="process-step" data-reveal style="--d:350ms">
+            <span class="process-num" aria-hidden="true">06</span>
+            <h3 class="process-title">Improve</h3>
+            <p class="process-desc">Iterate based on feedback and real-world usage.</p>
+          </li>
+        </ol>
       </div>
     </section>
 
@@ -282,7 +373,7 @@
     <section class="section" id="github" aria-labelledby="github-title">
       <div class="container">
         <div class="section-head reveal" data-reveal>
-          <span class="section-eyebrow">07 &middot; Development</span>
+          <span class="section-eyebrow">09 &middot; Development</span>
           <h2 class="section-title" id="github-title">GitHub</h2>
         </div>
 
@@ -311,7 +402,7 @@
     <section class="section" id="contact" aria-labelledby="contact-title">
       <div class="container">
         <div class="section-head reveal" data-reveal>
-          <span class="section-eyebrow">08 &middot; Contact</span>
+          <span class="section-eyebrow">10 &middot; Contact</span>
           <h2 class="section-title" id="contact-title">Let's Build Something</h2>
           <p class="section-sub">I'm always open to internships, collaborations and interesting problems.</p>
         </div>

@@ -20,3 +20,4 @@ Thumbs.db
 # Uploads / build artifacts
 dist/
 coverage/
+cookies.txt

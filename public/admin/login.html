@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>Admin Login · Vinit Niwalkar</title>
+  <meta name="theme-color" content="#06070d" />
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/admin/css/admin.css" />
+</head>
+<body class="login-body">
+  <!-- ambient animated background (orbs + grid) -->
+  <div class="auth-stage" aria-hidden="true">
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+    <div class="grid-overlay"></div>
+  </div>
+
+  <!-- full-screen premium composition -->
+  <div class="login-shell">
+
+    <!-- LEFT / CENTER: the sign-in card -->
+    <main class="login-zone">
+      <div class="login-brand-mobile anim-rise d1"><span class="dot"></span> Portfolio Admin</div>
+
+      <div class="auth-wrap">
+        <div class="auth-card" id="authCard">
+          <div class="auth-logo anim-rise d1"><span class="dot"></span> Portfolio Admin</div>
+          <h1>Welcome back</h1>
+          <p class="intro">Sign in to manage your portfolio content.</p>
+
+          <form id="loginForm" novalidate autocomplete="on">
+            <div class="field anim-rise d3">
+              <label for="email">Email</label>
+              <input class="field-input" type="email" id="email" name="email" placeholder="you@example.com" autocomplete="username" required maxlength="254" />
+            </div>
+            <div class="field anim-rise d4">
+              <label for="password">Password</label>
+              <div class="pw-wrap">
+                <input class="field-input" type="password" id="password" name="password" placeholder="••••••••••" autocomplete="current-password" required maxlength="72" />
+                <button type="button" class="pw-toggle" id="pwToggle" aria-label="Show password" aria-pressed="false">
+                  <svg class="pw-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-7.5 11-7.5 11 7.5 11 7.5-4 7.5-11 7.5S1 12 1 12z"/><circle cx="12" cy="12" r="3.2"/></svg>
+                  <svg class="pw-ico pw-ico-off" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20C5 20 1 12 1 12a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
+                </button>
+              </div>
+            </div>
+            <div class="field field--end anim-rise d5">
+              <a href="/vinit-control/forgot-password" id="forgotLink">Forgot password?</a>
+            </div>
+            <button class="btn btn-primary btn-block anim-rise d6" type="submit" id="submitBtn">Sign in</button>
+          </form>
+
+          <div class="auth-foot">
+            Access is restricted to the portfolio owner.<br />
+            If verification is pending, a confirmation email may be required.
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <!-- RIGHT: elegant visual composition (decorative only, no fake data) -->
+    <aside class="login-visual" aria-hidden="true">
+      <div class="aurora"></div>
+      <div class="login-visual-inner">
+        <p class="visual-kicker"><span class="v-dot"></span>Portfolio Admin</p>
+        <h2 class="visual-title">Content<br /><em>Control Center</em></h2>
+        <p class="visual-sub">One premium dashboard to shape every section of your portfolio — publish, refine, and stay in control.</p>
+        <div class="v-list">
+          <span class="v-chip vc-1"><i>◈</i>Projects</span>
+          <span class="v-chip vc-2"><i>♢</i>Skills</span>
+          <span class="v-chip vc-3"><i>✦</i>Certificates</span>
+          <span class="v-chip vc-4"><i>▲</i>Experience</span>
+          <span class="v-chip vc-5"><i>◆</i>Education</span>
+          <span class="v-chip vc-6"><i>↯</i>Resume · PDF</span>
+        </div>
+        <p class="visual-foot">Authorized access only</p>
+      </div>
+
+      <div class="float-card fc-1"><span class="fc-ico">◈</span><span>Projects</span></div>
+      <div class="float-card fc-2"><span class="fc-ico">♢</span><span>Skills</span></div>
+      <div class="float-card fc-3"><span class="fc-ico">↯</span><span>Resume · PDF</span></div>
+      <div class="float-card fc-4"><span class="fc-ico">✦</span><span>Certificates</span></div>
+    </aside>
+  </div>
+
+  <div id="toasts"></div>
+
+  <script>
+    window.__ADMIN_PAGE__ = 'login';
+  </script>
+  <script src="/admin/js/auth.js"></script>
+</body>
+</html>

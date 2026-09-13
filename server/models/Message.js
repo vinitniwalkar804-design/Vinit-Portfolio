@@ -23,6 +23,14 @@ const messageSchema = new mongoose.Schema({
     minlength: [10, 'Message must be at least 10 characters'],
     maxlength: [2000, 'Message must be under 2000 characters']
   },
+  subject: {
+    type: String,
+    default: '',
+    trim: true,
+    maxlength: [200, 'Subject must be under 200 characters']
+  },
+  read: { type: Boolean, default: false },
+  readAt: { type: Date, default: null },
   createdAt: { type: Date, default: Date.now }
 });
 

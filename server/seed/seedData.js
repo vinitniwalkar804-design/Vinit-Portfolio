@@ -70,6 +70,8 @@ const projects = [
         'Finding a missing person is stressful and fragmented. Reports live in different places, there is no shared system for citizens, families, police and administrators, and matching a found person with a missing-person report is slow and largely manual.',
       solution:
         'A central, role-based platform where anyone can file or search a report securely. Police and administrators get a structured management flow, and an AI-assisted face-matching module built with Python and OpenCV helps connect found persons to active reports. Location-based search narrows results, and a notification system plus real-time case status updates keep everyone informed as a case progresses.',
+      architecture:
+        'Three-tier design: a React client, an Express REST API, and a MongoDB data layer. JWT authentication gates role-specific views for citizens, families, police and administrators, while the Python + OpenCV face-matching module runs as a service the backend calls when comparing reports.',
       featuredFeatures: [
         'Role-based access control for families, citizens, police and administrators',
         'Authentication-secured reporting and case management',
@@ -79,7 +81,9 @@ const projects = [
       ],
       techStack: ['React.js', 'Node.js', 'Express.js', 'MongoDB', 'Python', 'OpenCV', 'JWT Authentication'],
       role:
-        'Full-stack development of the web application — designing the role-based data flow, building the Express + MongoDB backend, wiring authentication and real-time status updates, and integrating the Python/OpenCV face-matching module with the system.'
+        'Full-stack development of the web application — designing the role-based data flow, building the Express + MongoDB backend, wiring authentication and real-time status updates, and integrating the Python/OpenCV face-matching module with the system.',
+      impact:
+        'Brings missing-person reporting, searching and case tracking onto a single shared platform, giving families, police and administrators one structured flow and replacing fragmented, largely manual matching.'
     },
     order: 1
   },
@@ -102,6 +106,8 @@ const projects = [
         'Practicing for interviews is usually unstructured — candidates answer questions with no feedback, no evaluation, and no record of how they did over time.',
       solution:
         'InterviX-AI delivers an interactive, AI-assisted interview session, captures candidate responses, and evaluates performance so candidates get structured practice and a clearer picture of their strengths and gaps.',
+      architecture:
+        'MERN three-tier structure — a React frontend drives the interactive interview session, the Express REST API orchestrates the AI-assistant conversation, and MongoDB persists candidate profiles, answers and evaluation results.',
       featuredFeatures: [
         'Interactive AI-assisted interview sessions',
         'Candidate performance evaluation',
@@ -111,7 +117,9 @@ const projects = [
       ],
       techStack: ['React.js', 'Node.js', 'Express.js', 'MongoDB', 'AI Assistant'],
       role:
-        'Full-stack development — building the interview flow with the AI assistant, implementing performance evaluation, and managing candidate data through the Express/MongoDB backend.'
+        'Full-stack development — building the interview flow with the AI assistant, implementing performance evaluation, and managing candidate data through the Express/MongoDB backend.',
+      impact:
+        'Turns unstructured interview practice into a structured, measurable loop — candidates receive evaluated feedback and keep a persistent record of how they performed over time.'
     },
     order: 2
   },
@@ -123,7 +131,7 @@ const projects = [
     description:
       'CINEMAX is a responsive movie browsing web application with an interactive, user-friendly interface built with HTML, CSS and JavaScript for exploring movie listings.',
     featured: false,
-    badge: '',
+    badge: 'Web App',
     tags: ['HTML5', 'CSS3', 'JavaScript'],
     github: 'https://github.com/vinitniwalkar804-design/CINEMAX',
     liveUrl: '',
@@ -134,6 +142,8 @@ const projects = [
         'Browsing movie listings often feels static and cluttered — there is little interactivity and the layout does not adapt well across devices.',
       solution:
         'A clean, responsive interface built with HTML, CSS and JavaScript that makes exploring movie listings interactive, smooth and enjoyable on desktop and mobile alike.',
+      architecture:
+        'A two-tier frontend application — semantic HTML, modern CSS and vanilla JavaScript render the movie listings with an interactive, responsive UI and no backend dependency.',
       featuredFeatures: [
         'Responsive, mobile-first layout',
         'Interactive browsing experience',
@@ -141,7 +151,9 @@ const projects = [
       ],
       techStack: ['HTML5', 'CSS3', 'JavaScript'],
       role:
-        'Front-end design and development — building the responsive layout, interactions and overall UI using vanilla web technologies.'
+        'Front-end design and development — building the responsive layout, interactions and overall UI using vanilla web technologies.',
+      impact:
+        'A lightweight, dependency-free browsing experience that stays smooth and readable across desktop and mobile.'
     },
     order: 3
   },
@@ -164,6 +176,8 @@ const projects = [
         'Engineering students juggle scattered resources — PDFs, notes, previous-year papers, quizzes and career-prep material live in separate places with no single view. Finding answers from old documents is manual and slow, and there is little personalization to a student\u2019s weak topics or learning progress.',
       solution:
         'EduRise centralizes everything on one platform. Students upload PDFs, which are chunked and indexed for RAG-based question answering — the Ollama + Llama 3.2 AI assistant answers questions grounded in their own documents. AI-generated quizzes, previous-year question preparation, weak-topic identification, academic analytics and personalized recommendations turn scattered study material into an adaptive learning loop. JWT authentication and password hashing keep accounts secure, while REST APIs and MongoDB manage the data.',
+      architecture:
+        'Layered full-stack design: an Express.js + MongoDB backend with JWT authentication and password hashing, a REST API for the client, a PDF upload + text-extraction + chunking pipeline, and an Ollama + Llama 3.2 AI service with RAG that answers questions grounded only in the student\u2019s uploaded documents.',
       featuredFeatures: [
         'AI Assistant using Ollama + Llama 3.2',
         'RAG-based academic document Q&A',
@@ -182,7 +196,9 @@ const projects = [
       ],
       techStack: ['HTML5', 'CSS3', 'JavaScript', 'Node.js', 'Express.js', 'MongoDB', 'JWT', 'Password Hashing', 'Ollama', 'Llama 3.2', 'RAG', 'REST APIs'],
       role:
-        'Designed and developed the platform end-to-end — building the Express.js + MongoDB backend with JWT authentication and password hashing, implementing PDF upload, text extraction, document chunking and retrieval, wiring the Ollama + Llama 3.2 AI assistant with RAG, and building the AI quiz engine, analytics and personalized recommendation features.'
+        'Designed and developed the platform end-to-end — building the Express.js + MongoDB backend with JWT authentication and password hashing, implementing PDF upload, text extraction, document chunking and retrieval, wiring the Ollama + Llama 3.2 AI assistant with RAG, and building the AI quiz engine, analytics and personalized recommendation features.',
+      impact:
+        'Consolidates scattered study material into one secure platform — RAG-grounded document Q&A, AI quizzes and weak-topic analytics turn static resources into an adaptive, personal learning loop.'
     },
     order: 4
   }
@@ -266,39 +282,114 @@ const education = [
 
 const certificates = [
   {
-    title: 'Generative AI',
+    title: 'Getting Started with Cybersecurity',
+    provider: 'IBM SkillsBuild',
+    category: 'Cybersecurity',
+    icon: 'cyber',
+    order: 0,
+    issuedAt: 'Aug 17, 2026',
+    credentialUrl: 'https://www.credly.com/badges/d2e26920-0fa8-482d-9acc-14ffec862f0d',
+    file: '/certificates/getting-started-cybersecurity-ibm.pdf'
+  },
+  {
+    title: 'SQL and Database Management Systems Virtual Internship',
+    provider: 'EduSkills / AICTE',
+    category: 'Database',
+    icon: 'sql',
+    order: 0,
+    issuedAt: 'Aug 17, 2026',
+    certificateId: '2026-0FE3CE90E3',
+    file: '/certificates/sql-dbms-eduskills.pdf'
+  },
+  {
+    title: 'Ethical Hacking Virtual Internship (Hindi)',
+    provider: 'EduSkills / AICTE',
+    category: 'Cybersecurity',
+    icon: 'ethical',
+    order: 0,
+    issuedAt: 'Mar 18, 2026',
+    certificateId: '2026-EFC6148D9C',
+    file: '/certificates/ethical-hacking-eduskills.pdf'
+  },
+  {
+    title: 'Python Full Stack Developer Virtual Internship',
     provider: 'EduSkills',
+    category: 'Full Stack Development',
+    icon: 'python',
+    order: 1,
+    file: '/certificates/Python full stack certificate by Eduskills.pdf'
+  },
+  {
+    title: 'AI-ML Virtual Internship',
+    provider: 'EduSkills / Google for Developers',
     category: 'AI / ML',
+    icon: 'ml',
+    order: 2,
+    file: '/certificates/ai-ml-eduskills.pdf'
+  },
+  {
+    title: 'Generative AI Virtual Internship',
+    provider: 'EduSkills / Google Cloud',
+    category: 'Generative AI',
     icon: 'genai',
-    order: 1
+    order: 3,
+    file: '/certificates/generative-ai-eduskills.pdf'
+  },
+  {
+    title: 'Networking Virtual Internship',
+    provider: 'EduSkills / Zscaler',
+    category: 'Cloud / Networking',
+    icon: 'zscaler',
+    order: 4,
+    file: '/certificates/networking-zscaler.pdf'
+  },
+  {
+    title: 'Web Exploit Hunting and Bug Bounty Virtual Internship',
+    provider: 'EduSkills',
+    category: 'Cybersecurity',
+    icon: 'bugbounty',
+    order: 5,
+    file: '/certificates/web-exploit-bug-bounty-eduskills.pdf'
   },
   {
     title: 'Soft Skills',
     provider: 'NPTEL',
     category: 'Professional Skills',
     icon: 'soft',
-    order: 2
+    order: 6,
+    file: '/certificates/Soft Skill Development certificate by NPTEL.pdf'
   },
   {
     title: 'Python 3.4.3 Training',
     provider: 'Spoken Tutorial, IIT Bombay',
     category: 'Programming',
     icon: 'python',
-    order: 3
+    order: 7,
+    file: '/certificates/VINIT-NIWALKAR-Participant-Certificate.pdf'
   },
   {
     title: 'AI for Beginners',
     provider: 'HP LIFE',
-    category: 'AI Foundation',
+    category: 'AI / ML',
     icon: 'ai',
-    order: 4
+    order: 8,
+    file: '/certificates/ai-for-beginners-hp-life.pdf'
   },
   {
-    title: 'Getting Started with AI',
+    title: 'Getting Started with Artificial Intelligence',
     provider: 'IBM SkillsBuild',
-    category: 'AI Foundation',
+    category: 'AI / ML',
     icon: 'ai',
-    order: 5
+    order: 9,
+    file: '/certificates/getting-started-ai-ibm.pdf'
+  },
+  {
+    title: 'Java Training',
+    provider: 'Spoken Tutorial / EduPyramids / IIT Bombay',
+    category: 'Programming',
+    icon: 'java',
+    order: 10,
+    file: '/certificates/java-training-iit-bombay.pdf'
   }
 ];
 

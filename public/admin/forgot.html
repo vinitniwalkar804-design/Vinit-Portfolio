@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>Forgot Password · Portfolio Admin</title>
+  <meta name="theme-color" content="#06070d" />
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/admin/css/admin.css" />
+</head>
+<body>
+  <div class="auth-stage" aria-hidden="true">
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+    <div class="grid-overlay"></div>
+  </div>
+
+  <div class="auth-wrap">
+    <div class="auth-card">
+      <div class="auth-logo"><span class="dot"></span>Portfolio Admin</div>
+      <div class="auth-icon">🔑</div>
+      <h1>Reset your password</h1>
+      <p class="intro">Enter your admin email and we will send you a secure reset link (valid for 60 minutes).</p>
+
+      <form id="forgotForm" novalidate>
+        <div class="field">
+          <label for="email">Email</label>
+          <input class="field-input" type="email" id="email" name="email" placeholder="you@example.com" autocomplete="username" required maxlength="254" />
+        </div>
+        <button class="btn btn-primary btn-block" type="submit" id="submitBtn">Send reset link</button>
+      </form>
+
+      <div class="auth-foot"><a href="/vinit-control/login">Back to sign in</a></div>
+    </div>
+  </div>
+
+  <div id="toasts"></div>
+
+  <script>
+    window.__ADMIN_PAGE__ = 'forgot';
+  </script>
+  <script src="/admin/js/auth.js"></script>
+</body>
+</html>

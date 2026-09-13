@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>Dashboard · Portfolio Admin</title>
+  <meta name="theme-color" content="#06070d" />
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/admin/css/admin.css" />
+</head>
+<body>
+  <div class="layout">
+
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-brand">
+        <span class="dot"></span>
+        <div>Portfolio Admin<small>Content Studio</small></div>
+      </div>
+
+      <nav id="nav">
+        <div class="nav-item active" data-section="overview"><span class="ic"></span>Overview</div>
+        <div class="nav-item" data-section="profile"><span class="ic"></span>Profile / About</div>
+        <div class="nav-item" data-section="projects"><span class="ic"></span>Projects</div>
+        <div class="nav-item" data-section="certificates"><span class="ic"></span>Certificates</div>
+        <div class="nav-item" data-section="resume"><span class="ic"></span>Resume</div>
+        <div class="nav-item" data-section="skills"><span class="ic"></span>Skills</div>
+        <div class="nav-item" data-section="education"><span class="ic"></span>Education</div>
+        <div class="nav-item" data-section="experience"><span class="ic"></span>Experience</div>
+        <div class="nav-item" data-section="messages"><span class="ic"></span>Messages<span class="count" id="msgCount"></span></div>
+        <div class="nav-item" data-section="settings"><span class="ic"></span>Settings</div>
+      </nav>
+
+      <div class="sidebar-foot">
+        <div class="sidebar-user">
+          <div class="avatar" id="adminAvatar">VN</div>
+          <div>
+            <div class="name" id="adminName">Admin</div>
+            <div class="sub" id="adminEmail">-</div>
+          </div>
+        </div>
+        <button class="btn btn-ghost btn-block btn-sm" id="logoutBtn" style="margin-top:10px">Sign out</button>
+      </div>
+    </aside>
+    <div class="scrim" id="scrim"></div>
+
+    <main class="main">
+      <header class="topbar">
+        <button class="hamburger" id="menuBtn" aria-label="Toggle menu">☰</button>
+        <h2 id="pageTitle">Overview</h2>
+        <span class="spacer"></span>
+        <a class="btn btn-sm" href="/" target="_blank" rel="noopener">View public site ↗</a>
+      </header>
+
+      <div class="content" id="content">
+        <div class="empty" style="padding:80px 16px"><span class="spinner" style="width:28px;height:28px"></span><p style="margin-top:12px">Loading dashboard…</p></div>
+      </div>
+    </main>
+  </div>
+
+  <!-- modal -->
+  <div class="overlay" id="modalOverlay">
+    <div class="modal modal-lg" id="modalBox"></div>
+  </div>
+  <!-- confirm -->
+  <div class="overlay" id="confirmOverlay">
+    <div class="modal" id="confirmBox"></div>
+  </div>
+
+  <div id="toasts"></div>
+
+  <script src="/admin/js/dashboard.js"></script>
+  <script>
+    /* If the dashboard script never runs (failed/blocked/cached-old load),
+       replace the silent "Loading dashboard…" spinner with a clear message
+       so the main area is never blank with no explanation. */
+    setTimeout(function () {
+      if (window.dashboardReady) return;
+      var c = document.getElementById('content');
+      if (!c) return;
+      c.innerHTML =
+        '<div class="section"><div class="empty">' +
+        '<div class="big">⚠️</div>' +
+        '<p style="margin:0 0 10px">The dashboard script did not load.' +
+        '<br>This usually means your browser is showing a stale cached copy.</p>' +
+        '<div class="btn-row">' +
+        '<button class="btn btn-primary" onclick="location.reload()">Reload page</button>' +
+        '<button class="btn btn-ghost" onclick="location.href=\'/\'">View public site</button>' +
+        '</div></div></div>';
+    }, 2500);
+  </script>
+</body>
+</html>

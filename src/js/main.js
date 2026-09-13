@@ -115,6 +115,8 @@
             'Finding a missing person is stressful and fragmented. Reports live in different places, there is no shared system for citizens, families, police and administrators, and matching a found person with a missing-person report is slow and largely manual.',
           solution:
             'A central, role-based platform where anyone can file or search a report securely. Police and administrators get a structured management flow, and an AI-assisted face-matching module built with Python and OpenCV helps connect found persons to active reports. Location-based search narrows results, and a notification system plus real-time case status updates keep everyone informed as a case progresses.',
+          architecture:
+            'Three-tier design: a React client, an Express REST API, and a MongoDB data layer. JWT authentication gates role-specific views for citizens, families, police and administrators, while the Python + OpenCV face-matching module runs as a service the backend calls when comparing reports.',
           featuredFeatures: [
             'Role-based access control for families, citizens, police and administrators',
             'Authentication-secured reporting and case management',
@@ -124,7 +126,9 @@
           ],
           techStack: ['React.js', 'Node.js', 'Express.js', 'MongoDB', 'Python', 'OpenCV', 'JWT Authentication'],
           role:
-            'Full-stack development of the web application — designing the role-based data flow, building the Express + MongoDB backend, wiring authentication and real-time status updates, and integrating the Python/OpenCV face-matching module with the system.'
+            'Full-stack development of the web application — designing the role-based data flow, building the Express + MongoDB backend, wiring authentication and real-time status updates, and integrating the Python/OpenCV face-matching module with the system.',
+          impact:
+            'Brings missing-person reporting, searching and case tracking onto a single shared platform, giving families, police and administrators one structured flow and replacing fragmented, largely manual matching.'
         }
       },
       {
@@ -146,6 +150,8 @@
             'Practicing for interviews is usually unstructured — candidates answer questions with no feedback, no evaluation, and no record of how they did over time.',
           solution:
             'InterviX-AI delivers an interactive, AI-assisted interview session, captures candidate responses, and evaluates performance so candidates get structured practice and a clearer picture of their strengths and gaps.',
+          architecture:
+            'MERN three-tier structure — a React frontend drives the interactive interview session, the Express REST API orchestrates the AI-assistant conversation, and MongoDB persists candidate profiles, answers and evaluation results.',
           featuredFeatures: [
             'Interactive AI-assisted interview sessions',
             'Candidate performance evaluation',
@@ -155,7 +161,9 @@
           ],
           techStack: ['React.js', 'Node.js', 'Express.js', 'MongoDB', 'AI Assistant'],
           role:
-            'Full-stack development — building the interview flow with the AI assistant, implementing performance evaluation, and managing candidate data through the Express/MongoDB backend.'
+            'Full-stack development — building the interview flow with the AI assistant, implementing performance evaluation, and managing candidate data through the Express/MongoDB backend.',
+          impact:
+            'Turns unstructured interview practice into a structured, measurable loop — candidates receive evaluated feedback and keep a persistent record of how they performed over time.'
         }
       },
       {
@@ -166,7 +174,7 @@
         description:
           'CINEMAX is a responsive movie browsing web application with an interactive, user-friendly interface built with HTML, CSS and JavaScript for exploring movie listings.',
         featured: false,
-        badge: '',
+        badge: 'Web App',
         tags: ['HTML5', 'CSS3', 'JavaScript'],
         github: 'https://github.com/vinitniwalkar804-design/CINEMAX',
         liveUrl: '',
@@ -177,10 +185,14 @@
             'Browsing movie listings often feels static and cluttered — there is little interactivity and the layout does not adapt well across devices.',
           solution:
             'A clean, responsive interface built with HTML, CSS and JavaScript that makes exploring movie listings interactive, smooth and enjoyable on desktop and mobile alike.',
+          architecture:
+            'A two-tier frontend application — semantic HTML, modern CSS and vanilla JavaScript render the movie listings with an interactive, responsive UI and no backend dependency.',
           featuredFeatures: ['Responsive, mobile-first layout', 'Interactive browsing experience', 'Clean and user-friendly interface'],
           techStack: ['HTML5', 'CSS3', 'JavaScript'],
           role:
-            'Front-end design and development — building the responsive layout, interactions and overall UI using vanilla web technologies.'
+            'Front-end design and development — building the responsive layout, interactions and overall UI using vanilla web technologies.',
+          impact:
+            'A lightweight, dependency-free browsing experience that stays smooth and readable across desktop and mobile.'
         }
       },
       {
@@ -202,6 +214,8 @@
             'Engineering students juggle scattered resources — PDFs, notes, previous-year papers, quizzes and career-prep material live in separate places with no single view. Finding answers from old documents is manual and slow, and there is little personalization to a student\u2019s weak topics or learning progress.',
           solution:
             'EduRise centralizes everything on one platform. Students upload PDFs, which are chunked and indexed for RAG-based question answering — the Ollama + Llama 3.2 AI assistant answers questions grounded in their own documents. AI-generated quizzes, previous-year question preparation, weak-topic identification, academic analytics and personalized recommendations turn scattered study material into an adaptive learning loop. JWT authentication and password hashing keep accounts secure, while REST APIs and MongoDB manage the data.',
+          architecture:
+            'Layered full-stack design: an Express.js + MongoDB backend with JWT authentication and password hashing, a REST API for the client, a PDF upload + text-extraction + chunking pipeline, and an Ollama + Llama 3.2 AI service with RAG that answers questions grounded only in the student\u2019s uploaded documents.',
           featuredFeatures: [
             'AI Assistant using Ollama + Llama 3.2',
             'RAG-based academic document Q&A',
@@ -220,7 +234,9 @@
           ],
           techStack: ['HTML5', 'CSS3', 'JavaScript', 'Node.js', 'Express.js', 'MongoDB', 'JWT', 'Password Hashing', 'Ollama', 'Llama 3.2', 'RAG', 'REST APIs'],
           role:
-            'Designed and developed the platform end-to-end — building the Express.js + MongoDB backend with JWT authentication and password hashing, implementing PDF upload, text extraction, document chunking and retrieval, wiring the Ollama + Llama 3.2 AI assistant with RAG, and building the AI quiz engine, analytics and personalized recommendation features.'
+            'Designed and developed the platform end-to-end — building the Express.js + MongoDB backend with JWT authentication and password hashing, implementing PDF upload, text extraction, document chunking and retrieval, wiring the Ollama + Llama 3.2 AI assistant with RAG, and building the AI quiz engine, analytics and personalized recommendation features.',
+          impact:
+            'Consolidates scattered study material into one secure platform — RAG-grounded document Q&A, AI quizzes and weak-topic analytics turn static resources into an adaptive, personal learning loop.'
         }
       }
     ],
@@ -285,11 +301,43 @@
       }
     ],
     certificates: [
-      { title: 'Generative AI', provider: 'EduSkills', category: 'AI / ML', icon: 'genai' },
-      { title: 'Soft Skills', provider: 'NPTEL', category: 'Professional Skills', icon: 'soft' },
-      { title: 'Python 3.4.3 Training', provider: 'Spoken Tutorial, IIT Bombay', category: 'Programming', icon: 'python' },
-      { title: 'AI for Beginners', provider: 'HP LIFE', category: 'AI Foundation', icon: 'ai' },
-      { title: 'Getting Started with AI', provider: 'IBM SkillsBuild', category: 'AI Foundation', icon: 'ai' }
+      {
+        title: 'Getting Started with Cybersecurity',
+        provider: 'IBM SkillsBuild',
+        category: 'Cybersecurity',
+        icon: 'cyber',
+        issuedAt: 'Aug 17, 2026',
+        credentialUrl: 'https://www.credly.com/badges/d2e26920-0fa8-482d-9acc-14ffec862f0d',
+        file: '/certificates/getting-started-cybersecurity-ibm.pdf'
+      },
+      {
+        title: 'SQL and Database Management Systems Virtual Internship',
+        provider: 'EduSkills / AICTE',
+        category: 'Database',
+        icon: 'sql',
+        issuedAt: 'Aug 17, 2026',
+        certificateId: '2026-0FE3CE90E3',
+        file: '/certificates/sql-dbms-eduskills.pdf'
+      },
+      {
+        title: 'Ethical Hacking Virtual Internship (Hindi)',
+        provider: 'EduSkills / AICTE',
+        category: 'Cybersecurity',
+        icon: 'ethical',
+        issuedAt: 'Mar 18, 2026',
+        certificateId: '2026-EFC6148D9C',
+        file: '/certificates/ethical-hacking-eduskills.pdf'
+      },
+      { title: 'Python Full Stack Developer Virtual Internship', provider: 'EduSkills', category: 'Full Stack Development', icon: 'python', file: '/certificates/Python full stack certificate by Eduskills.pdf' },
+      { title: 'AI-ML Virtual Internship', provider: 'EduSkills / Google for Developers', category: 'AI / ML', icon: 'ml', file: '/certificates/ai-ml-eduskills.pdf' },
+      { title: 'Generative AI Virtual Internship', provider: 'EduSkills / Google Cloud', category: 'Generative AI', icon: 'genai', file: '/certificates/generative-ai-eduskills.pdf' },
+      { title: 'Networking Virtual Internship', provider: 'EduSkills / Zscaler', category: 'Cloud / Networking', icon: 'zscaler', file: '/certificates/networking-zscaler.pdf' },
+      { title: 'Web Exploit Hunting and Bug Bounty Virtual Internship', provider: 'EduSkills', category: 'Cybersecurity', icon: 'bugbounty', file: '/certificates/web-exploit-bug-bounty-eduskills.pdf' },
+      { title: 'Soft Skills', provider: 'NPTEL', category: 'Professional Skills', icon: 'soft', file: '/certificates/Soft Skill Development certificate by NPTEL.pdf' },
+      { title: 'Python 3.4.3 Training', provider: 'Spoken Tutorial, IIT Bombay', category: 'Programming', icon: 'python', file: '/certificates/VINIT-NIWALKAR-Participant-Certificate.pdf' },
+      { title: 'AI for Beginners', provider: 'HP LIFE', category: 'AI / ML', icon: 'ai', file: '/certificates/ai-for-beginners-hp-life.pdf' },
+      { title: 'Getting Started with Artificial Intelligence', provider: 'IBM SkillsBuild', category: 'AI / ML', icon: 'ai', file: '/certificates/getting-started-ai-ibm.pdf' },
+      { title: 'Java Training', provider: 'Spoken Tutorial / EduPyramids / IIT Bombay', category: 'Programming', icon: 'java', file: '/certificates/java-training-iit-bombay.pdf' }
     ]
   };
 
@@ -318,13 +366,6 @@
     dsa: { abbr: 'DSA', c: '#F59E0B' },
     git: { abbr: 'G', c: '#F05033' },
     oop: { abbr: 'OOP', c: '#E11D48' }
-  };
-
-  const CERT_ICONS = {
-    genai: { abbr: 'AI', c: '#7C3AED' },
-    ai: { abbr: 'AI', c: '#6366F1' },
-    soft: { abbr: 'S', c: '#0EA5E9' },
-    python: { abbr: 'Py', c: '#3776AB' }
   };
 
   /* ---------- render: skills ---------- */
@@ -356,7 +397,7 @@
           })
           .join('');
         return (
-          '<div class="skill-card" data-reveal style="--d:' + cardDelay + 'ms">' +
+          '<div class="skill-card" data-cat="' + esc(cat) + '" data-reveal style="--d:' + cardDelay + 'ms">' +
           '<h3 class="skill-card-title">' + esc(cat) + '</h3>' +
           '<div class="skill-tiles">' + tilesHtml + '</div>' +
           '</div>'
@@ -366,6 +407,38 @@
 
     grid.innerHTML = html;
     if (useFallback) grid.setAttribute('data-source', 'fallback');
+
+    /* category filter (additive enhancement; hidden when a single category exists) */
+    const filter = $('#skillsFilter');
+    if (filter) {
+      const cats = catOrder.filter((c) => groups[c]);
+      if (cats.length > 1) {
+        filter.hidden = false;
+        filter.innerHTML =
+          '<button type="button" class="sf-btn is-active" data-cat="all" aria-pressed="true">All</button>' +
+          cats
+            .map(function (c) {
+              return '<button type="button" class="sf-btn" data-cat="' + esc(c) + '" aria-pressed="false">' + esc(c) + '</button>';
+            })
+            .join('');
+        filter.querySelectorAll('.sf-btn').forEach(function (btn) {
+          btn.addEventListener('click', function () {
+            const sel = btn.getAttribute('data-cat');
+            filter.querySelectorAll('.sf-btn').forEach(function (b) {
+              const on = b === btn;
+              b.classList.toggle('is-active', on);
+              b.setAttribute('aria-pressed', String(on));
+            });
+            $$('.skill-card', grid).forEach(function (card) {
+              card.classList.toggle('is-filtered', sel !== 'all' && card.getAttribute('data-cat') !== sel);
+              if (!card.classList.contains('is-filtered') && !card.classList.contains('is-revealed')) {
+                card.classList.add('is-revealed');
+              }
+            });
+          });
+        });
+      }
+    }
   }
 
   /* ---------- render: projects ---------- */
@@ -388,21 +461,24 @@
 
       var tagHtml = makeTags(p.tags || []);
       var caseId = esc(p._id || p.name);
+      var indexLabel = String(i + 1).padStart(2, '0');
 
       var ghHtml = '';
       if (p.github) {
-        ghHtml = '<a class="btn btn-outline btn-gh" href="' + esc(p.github) + '" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation()">' +
+        ghHtml = '<a class="btn btn-outline btn-gh" href="' + esc(p.github) + '" target="_blank" rel="noopener noreferrer" ' +
+          'aria-label="View ' + esc(p.name) + ' on GitHub" onclick="event.stopPropagation()">' +
           GH_ICON + 'GitHub <span class="btn-gh-arrow" aria-hidden="true">&#8599;</span></a>';
       }
 
       return '<article class="' + cls + '" data-reveal style="--d:' + d + 'ms" tabindex="0" role="button" aria-label="Open case study for ' + esc(p.name) + '">' +
+        '<span class="project-index" aria-hidden="true">' + indexLabel + '</span>' +
         (p.badge ? '<span class="project-badge">' + esc(p.badge) + '</span>' : '') +
         '<h3 class="project-name">' + esc(p.name) + '</h3>' +
         (p.subtitle ? '<p class="project-subtitle">' + esc(p.subtitle) + '</p>' : '') +
         (p.description ? '<p class="project-desc">' + esc(p.description) + '</p>' : '') +
         '<div class="project-tags">' + tagHtml + '</div>' +
         '<div class="project-actions">' +
-          '<button type="button" class="btn btn-outline" data-open-case="' + caseId + '">Case Study</button>' +
+          '<button type="button" class="btn btn-outline" data-open-case="' + caseId + '" aria-label="View case study for ' + esc(p.name) + '">Case Study</button>' +
           ghHtml +
         '</div>' +
       '</article>';
@@ -460,25 +536,137 @@
       .join('');
   }
 
-  /* ---------- render: certificates ---------- */
+  /* ---------- certificates: data state ---------- */
+  const certState = { items: [], query: '', category: 'All' };
+  const CERT_ARROW_ICON = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>';
+
+  function certIndexLabel(c, all) {
+    const idx = all.indexOf(c) + 1;
+    return String(idx > 99 ? 99 : idx).padStart(2, '0');
+  }
+
   function renderCertificates(items) {
     const grid = $('#certGrid');
     if (!grid) return;
-    grid.innerHTML = items
-      .map((c, i) => {
-        const icon = CERT_ICONS[c.icon] || CERT_ICONS.ai || { abbr: c.title.slice(0, 2).toUpperCase(), c: '#8B8FA8' };
-        return (
-          '<div class="cert-card" data-reveal style="--d:' + Math.min(i * 100, 400) + 'ms">' +
-          '<span class="cert-icon" style="color:' + icon.c + '">' + esc(icon.abbr) + '</span>' +
-          '<div>' +
+    certState.items = items || [];
+    const q = certState.query.trim().toLowerCase();
+    const cat = certState.category;
+
+    const visible = certState.items.filter(function (c) {
+      if (cat !== 'All' && (c.category || '') !== cat) return false;
+      if (!q) return true;
+      const hay = ((c.title || '') + ' ' + (c.provider || '') + ' ' + (c.category || '')).toLowerCase();
+      return hay.indexOf(q) !== -1;
+    });
+
+    const empty = visible.length === 0;
+    const html = visible
+      .map(function (c, i) {
+        const index = certIndexLabel(c, certState.items);
+        const inner =
+          '<span class="cert-index" aria-hidden="true">' + index + '</span>' +
+          '<div class="cert-card-body">' +
           '<h3 class="cert-title">' + esc(c.title) + '</h3>' +
           '<p class="cert-provider">' + esc(c.provider || '') + '</p>' +
-          '<span class="cert-category">' + esc(c.category || '') + '</span>' +
           '</div>' +
+          (c.file
+            ? '<span class="cert-arrow" aria-hidden="true">' + CERT_ARROW_ICON + '</span>'
+            : '');
+
+        if (c.file) {
+          return (
+            '<a class="cert-card is-clickable" data-reveal style="--d:' + Math.min(i * 80, 400) + 'ms" ' +
+            'href="' + esc(c.file) + '" target="_blank" rel="noopener noreferrer" ' +
+            'aria-label="Open ' + esc(c.title) + ' certificate from ' + esc(c.provider || '') + '">' +
+            inner +
+            '</a>'
+          );
+        }
+        return (
+          '<div class="cert-card" data-reveal style="--d:' + Math.min(i * 80, 400) + 'ms">' +
+          inner +
           '</div>'
         );
       })
       .join('');
+
+    grid.innerHTML = html || '<p class="cert-empty">No certificates match your search.</p>';
+
+    const verifier = $('#certVerify');
+    if (verifier) verifier.hidden = !empty;
+
+    const resetBtn = $('#certReset');
+    if (resetBtn) resetBtn.hidden = !(certState.query || certState.category !== 'All');
+
+    refreshReveal();
+  }
+
+  /* ---------- certificates: search + filter toolbar ---------- */
+  const CERT_FILTER_ORDER = ['All', 'AI / ML', 'Generative AI', 'Full Stack Development', 'Cybersecurity', 'Database', 'Cloud / Networking', 'Professional Skills', 'Programming'];
+
+  function buildCertFilters() {
+    const filters = $('#certFilters');
+    if (!filters) return;
+    const present = {};
+    certState.items.forEach(function (c) { present[c.category || 'Other'] = true; });
+    const cats = CERT_FILTER_ORDER.filter(function (c) { return c === 'All' || present[c]; });
+    filters.innerHTML = cats
+      .map(function (c) {
+        return '<button type="button" class="cert-f-btn' + (c === certState.category ? ' is-active' : '') + '" data-cat="' + esc(c) + '" aria-pressed="' + (c === certState.category) + '">' + esc(c) + '</button>';
+      })
+      .join('');
+  }
+
+  function initCertControls() {
+    buildCertFilters();
+    if (certControlsBound) return;
+    certControlsBound = true;
+    const search = $('#certSearch');
+    if (search) {
+      search.addEventListener('input', function () {
+        certState.query = search.value;
+        renderCertificates(certState.items);
+      });
+    }
+    const filters = $('#certFilters');
+    if (filters) {
+      filters.addEventListener('click', function (e) {
+        const btn = e.target.closest('.cert-f-btn');
+        if (!btn) return;
+        const cat = btn.getAttribute('data-cat');
+        certState.category = cat;
+        filters.querySelectorAll('.cert-f-btn').forEach(function (b) {
+          const on = b === btn;
+          b.classList.toggle('is-active', on);
+          b.setAttribute('aria-pressed', String(on));
+        });
+        renderCertificates(certState.items);
+      });
+    }
+    const reset = $('#certReset');
+    if (reset) {
+      reset.addEventListener('click', function () {
+        if (search) search.value = '';
+        certState.query = '';
+        certState.category = 'All';
+        if (filters) {
+          filters.querySelectorAll('.cert-f-btn').forEach(function (b) {
+            const on = b.getAttribute('data-cat') === 'All';
+            b.classList.toggle('is-active', on);
+            b.setAttribute('aria-pressed', String(on));
+          });
+        }
+        renderCertificates(certState.items);
+      });
+    }
+  }
+
+  /* ---------- certificates: render entry ---------- */
+  let certControlsBound = false;
+
+  function renderCertificatesSection(items) {
+    renderCertificates(items && items.length ? items : FALLBACK.certificates);
+    initCertControls();
   }
 
   /* ---------- modal ---------- */
@@ -524,9 +712,11 @@
       (cs.overview ? '<div class="modal-section"><h4 class="modal-section-title">Overview</h4><p class="modal-text">' + esc(cs.overview) + '</p></div>' : '') +
       (cs.problem ? '<div class="modal-section"><h4 class="modal-section-title">Problem</h4><p class="modal-text">' + esc(cs.problem) + '</p></div>' : '') +
       (cs.solution ? '<div class="modal-section"><h4 class="modal-section-title">Solution</h4><p class="modal-text">' + esc(cs.solution) + '</p></div>' : '') +
+      (cs.architecture ? '<div class="modal-section"><h4 class="modal-section-title">Architecture</h4><p class="modal-text">' + esc(cs.architecture) + '</p></div>' : '') +
       features +
       tech +
       (cs.role ? '<div class="modal-section"><h4 class="modal-section-title">My Role &amp; Contribution</h4><p class="modal-text">' + esc(cs.role) + '</p></div>' : '') +
+      (cs.impact ? '<div class="modal-section"><h4 class="modal-section-title">Result &amp; Impact</h4><p class="modal-text">' + esc(cs.impact) + '</p></div>' : '') +
       '<div class="modal-actions">' +
       '<a class="btn btn-outline" href="https://github.com/vinitniwalkar804-design" target="_blank" rel="noopener noreferrer">View GitHub Profile</a>' +
       ghBtn +
@@ -577,6 +767,15 @@
       { threshold: 0.12, rootMargin: '0px 0px -40px 0px' }
     );
     els.forEach((el) => revealObserver.observe(el));
+  }
+
+  /* refresh reveal state for re-rendered elements (certificates search/filter) */
+  function refreshReveal() {
+    $$('[data-reveal]:not(.is-revealed)').forEach((el) => {
+      const rect = el.getBoundingClientRect();
+      if (rect.top < window.innerHeight && rect.bottom > 0) el.classList.add('is-revealed');
+      else if (revealObserver) revealObserver.observe(el);
+    });
   }
 
   /* ---------- premium motion (2026) ---------- */
@@ -713,6 +912,29 @@
     update();
   }
 
+  /* header scroll progress bar */
+  function initScrollProgress() {
+    const bar = $('#scrollProgress');
+    if (!bar) return;
+    let ticking = false;
+    function update() {
+      const doc = document.documentElement;
+      const max = doc.scrollHeight - window.innerHeight;
+      const p = max > 0 ? Math.max(0, Math.min(1, window.scrollY / max)) : 0;
+      bar.style.width = (p * 100).toFixed(2) + '%';
+      bar.style.opacity = p > 0.02 ? '1' : '0';
+      ticking = false;
+    }
+    window.addEventListener('scroll', () => {
+      if (!ticking) {
+        requestAnimationFrame(update);
+        ticking = true;
+      }
+    }, { passive: true });
+    window.addEventListener('resize', update, { passive: true });
+    update();
+  }
+
   /* timeline progressive fill */
   function initTimeline() {
     const tl = $('#experienceTimeline');
@@ -795,7 +1017,7 @@
     const ind = $('#navIndicator');
     const list = $$('.nav-list').pop();
     if (!ind || !list) return;
-    if (window.innerWidth <= 768) {
+    if (window.innerWidth <= 991.98) {
       ind.style.opacity = 0;
       return;
     }
@@ -856,7 +1078,12 @@
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
-            navLinks.forEach((l) => l.classList.toggle('is-active', l.getAttribute('href') === '#' + entry.target.id));
+            navLinks.forEach((l) => {
+              const on = l.getAttribute('href') === '#' + entry.target.id;
+              l.classList.toggle('is-active', on);
+              if (on) l.setAttribute('aria-current', 'true');
+              else l.removeAttribute('aria-current');
+            });
             moveNavIndicator();
           }
         });
@@ -1026,7 +1253,7 @@
     renderProjects(data.projects || []);
     renderExperience(data.experience || []);
     renderEducation(data.education || []);
-    renderCertificates(data.certificates || []);
+    renderCertificatesSection(data.certificates || []);
   }
 
   const DATA_SOURCES = [
@@ -1067,6 +1294,7 @@
     populateStats(data);
     initReveal();
     initCountUp();
+    initScrollProgress();
     initTimeline();
     initProjectTilt();
     initCursor();

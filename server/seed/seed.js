@@ -9,6 +9,51 @@ const Certificate = require('../models/Certificate');
 
 const seedData = require('./seedData');
 
+async function patchMissingProjectFields() {
+  let patched = 0;
+  for (const sp of seedData.projects) {
+    const existing = await Project.findOne({ order: sp.order });
+    if (!existing) continue;
+    const upd = {};
+    if (!existing.badge && sp.badge) upd.badge = sp.badge;
+    if (existing.caseStudy && !existing.caseStudy.architecture && sp.caseStudy && sp.caseStudy.architecture)
+      upd['caseStudy.architecture'] = sp.caseStudy.architecture;
+    if (existing.caseStudy && !existing.caseStudy.impact && sp.caseStudy && sp.caseStudy.impact)
+      upd['caseStudy.impact'] = sp.caseStudy.impact;
+    if (Object.keys(upd).length) {
+      await Project.updateOne({ _id: existing._id }, { $set: upd });
+      patched++;
+    }
+  }
+  return patched;
+}
+
+async function insertMissingCertificates() {
+  let added = 0;
+  let patched = 0;
+  const syncFields = ['title', 'provider', 'icon', 'category', 'order', 'issuedAt', 'certificateId', 'credentialUrl', 'file'];
+  for (const sc of seedData.certificates) {
+    // match by file when present, else by order — avoids duplicate cards
+    let existing = null;
+    if (sc.file) existing = await Certificate.findOne({ file: sc.file });
+    if (!existing) existing = await Certificate.findOne({ order: sc.order });
+    if (!existing) {
+      await Certificate.insertMany([{ ...sc }]);
+      added++;
+      continue;
+    }
+    const upd = {};
+    for (const f of syncFields) {
+      if (sc[f] !== undefined && existing[f] === undefined || (sc[f] !== undefined && existing[f] !== sc[f])) upd[f] = sc[f];
+    }
+    if (Object.keys(upd).length) {
+      await Certificate.updateOne({ _id: existing._id }, { $set: upd });
+      patched++;
+    }
+  }
+  return { added, patched };
+}
+
 async function seedDatabase({ force = false } = {}) {
   const results = {};
 
@@ -29,6 +74,13 @@ async function seedDatabase({ force = false } = {}) {
   await run(Experience, seedData.experience, 'experience');
   await run(Education, seedData.education, 'education');
   await run(Certificate, seedData.certificates, 'certificates');
+
+  const projectPatch = await patchMissingProjectFields();
+  results['projects:additive-patch'] = `patched ${projectPatch} project(s)` +
+    (force ? ' (force reseed skipped patch)' : '');
+
+  const certSync = await insertMissingCertificates();
+  results['certificates:additive'] = `added ${certSync.added}, patched ${certSync.patched} certificate(s)`;
 
   return results;
 }
