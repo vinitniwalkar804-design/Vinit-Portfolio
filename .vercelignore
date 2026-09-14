@@ -1,0 +1,9 @@
+node_modules/
+.git/
+.env
+.env.local
+.env.*.local
+*.log
+cookies.txt
+mongo-backup/
+public/assets/_archive/

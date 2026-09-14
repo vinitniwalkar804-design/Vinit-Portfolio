@@ -90,6 +90,13 @@ app.use((err, _req, res, _next) => {
 
 const PORT = process.env.PORT || 5000;
 
+// Vercel runs this as a serverless function (process.env.VERCEL === '1').
+// There we still connect to MongoDB and seed, but we must not call app.listen()
+// — the exported Express app handles each invocation, and binding a port would
+// conflict with @vercel/node's own bridge. Local `npm start`/`npm run dev`
+// behavior is unchanged.
+const IS_SERVERLESS = process.env.VERCEL === '1';
+
 (async () => {
   let dbConnected = false;
   try {
@@ -104,6 +111,11 @@ const PORT = process.env.PORT || 5000;
     console.warn(
       `[DB] MongoDB unavailable (${err.message}). The API endpoints will report 503 and the frontend will use its bundled fallback content.`
     );
+  }
+
+  if (IS_SERVERLESS) {
+    console.log(`[server] Running on Vercel (serverless). Database: ${dbConnected ? 'connected' : 'NOT connected'}`);
+    return;
   }
 
   app.listen(PORT, () => {
