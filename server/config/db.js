@@ -16,34 +16,42 @@ const SERVER_SELECTION_TIMEOUT_MS =
 
 let connectPromise = null;
 
-function attemptConnect() {
+async function attemptConnect() {
   const uri = process.env.MONGODB_URI || FALLBACK_URI;
   const provided = Boolean(process.env.MONGODB_URI);
   console.log(
     `[DB] connecting | MONGODB_URI ${provided ? 'set in env' : 'NOT set (using local fallback)'} | ` +
       `target=${safeUri(uri)} | serverSelectionTimeoutMS=${SERVER_SELECTION_TIMEOUT_MS}`
   );
-  return mongoose
-    .connect(uri, { serverSelectionTimeoutMS: SERVER_SELECTION_TIMEOUT_MS })
-    .then((conn) => {
-      connectPromise = null;
-      console.log(`[DB] MongoDB connected: ${conn.connection.host}/${conn.connection.name}`);
-      return conn;
-    })
-    .catch((err) => {
-      connectPromise = null; // clear so the next caller can retry
-      const cause = err && err.cause ? err.cause : null;
-      console.error(
-        `[DB] MongoDB connection FAILED | name=${err && err.name ? err.name : 'unknown'} | ` +
-          `code=${err && err.code != null ? err.code : 'n/a'} | causeCode=${cause && cause.code != null ? cause.code : 'n/a'} | ` +
-          `message=${safeMessage(err && err.message)} | will retry on next request`
-      );
-      throw err;
+  try {
+    const conn = await mongoose.connect(uri, {
+      serverSelectionTimeoutMS: SERVER_SELECTION_TIMEOUT_MS
     });
+    // mongoose.connect() can resolve before the mongoose connection is fully
+    // "connected" (readyState flips to 1 a tick later). Wait for the real
+    // connected state so callers only proceed once queries can actually run.
+    if (mongoose.connection.readyState !== 1) {
+      await mongoose.connection.asPromise();
+    }
+    connectPromise = null;
+    console.log(`[DB] MongoDB connected: ${conn.connection.host}/${conn.connection.name}`);
+    return conn;
+  } catch (err) {
+    connectPromise = null; // clear so the next caller can retry
+    const cause = err && err.cause ? err.cause : null;
+    console.error(
+      `[DB] MongoDB connection FAILED | name=${err && err.name ? err.name : 'unknown'} | ` +
+        `code=${err && err.code != null ? err.code : 'n/a'} | causeCode=${cause && cause.code != null ? cause.code : 'n/a'} | ` +
+        `message=${safeMessage(err && err.message)} | will retry on next request`
+    );
+    throw err;
+  }
 }
 
-// Shared connection: concurrent callers await the in-flight attempt; a failure
-// is cleared so the next request automatically retries.
+// Shared connection: all callers await the SAME in-flight attempt (safe under
+// concurrent serverless invocations on one instance). The returned promise only
+// settles once mongoose is actually connected (readyState === 1). A failed
+// attempt is cleared so the next request automatically retries.
 function getConnection() {
   if (mongoose.connection.readyState === 1) {
     connectPromise = null;
@@ -59,3 +67,4 @@ const connectDB = () => getConnection();
 
 module.exports = connectDB;
 module.exports.getConnection = getConnection;
+module.exports.safeMessage = safeMessage;
