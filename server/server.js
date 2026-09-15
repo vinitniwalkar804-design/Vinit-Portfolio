@@ -97,6 +97,25 @@ const PORT = process.env.PORT || 5000;
 // behavior is unchanged.
 const IS_SERVERLESS = process.env.VERCEL === '1';
 
+// Safe startup diagnostics — never prints credentials, only presence/host.
+function safeDbHost(uri) {
+  try {
+    const m = String(uri || '').match(/^(?:mongodb(?:\+srv)?):\/\/(?:[^@/]+@)?([^/?#]+)/);
+    return m ? m[1] : 'unknown';
+  } catch {
+    return 'unknown';
+  }
+}
+const srvDbUri = process.env.MONGODB_URI || '';
+console.log(
+  `[env] VERCEL=${process.env.VERCEL || 'not set'} NODE_ENV=${process.env.NODE_ENV || 'not set'} | ` +
+    `MONGODB_URI=${srvDbUri ? `set (host="${safeDbHost(srvDbUri)}")` : 'NOT set'}`
+);
+
+if (!process.env.JWT_SECRET) {
+  console.warn('[env] JWT_SECRET NOT set on this runtime.');
+}
+
 (async () => {
   let dbConnected = false;
   try {
@@ -109,7 +128,7 @@ const IS_SERVERLESS = process.env.VERCEL === '1';
   } catch (err) {
     dbConnected = false;
     console.warn(
-      `[DB] MongoDB unavailable (${err.message}). The API endpoints will report 503 and the frontend will use its bundled fallback content.`
+      `[DB] MongoDB unavailable (name=${err && err.name ? err.name : 'unknown'}, code=${err && err.code != null ? err.code : 'n/a'}). The API endpoints will report 503 and the frontend will use its bundled fallback content.`
     );
   }
 
