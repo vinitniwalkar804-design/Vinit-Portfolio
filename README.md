@@ -66,8 +66,57 @@ CLIENT_ORIGIN=
 | `MONGODB_URI`   | MongoDB connection string (defaults to `mongodb://localhost:27017/portfolio`)       |
 | `PORT`          | Port for the Express server (default `5500` — the commonly-used `5000` can conflict with other local apps) |
 | `CLIENT_ORIGIN` | Optional. Leave empty for the default same-origin setup. Set it only if you serve the frontend separately (e.g. `http://localhost:5173`). |
+| `BLOB_READ_WRITE_TOKEN` | **Required in production.** Vercel Blob read-write token used for resume and certificate uploads (see below). |
+| `BLOB_RESUME_PREFIX` | Optional. Object-name prefix for resume objects inside the blob store (default `resumes`). Certificates always use `certificates/`. |
 
 `.env` is git-ignored. Never commit it.
+
+### File storage (required on Vercel)
+
+A Vercel function's filesystem is **read-only** and thrown away when the instance
+is recycled, so uploaded files cannot be written into `public/`.
+`server/config/storage.js` picks a provider automatically for **both** CMS
+uploads (resume and certificate PDFs):
+
+| Provider        | When                              | Behaviour                                                                       |
+| --------------- | --------------------------------- | ------------------------------------------------------------------------------- |
+| `vercel-blob`   | `BLOB_READ_WRITE_TOKEN` is set    | Uploads go to durable Blob storage.                                              |
+| `local`         | Token unset and not on Vercel     | Uploads go to `public/...`; the replaced resume is copied to `_archive/`.        |
+
+On Vercel without a token, uploads are **rejected with 503** instead of silently
+writing to a filesystem that will be discarded — that silent failure is what
+previously made the admin panel report "success" while the public resume never
+changed (and while certificate uploads failed outright).
+
+Setup: Vercel dashboard → **Storage** → create a **Blob** store with public
+access → connect it to the project (or create a read-write token) → set
+`BLOB_READ_WRITE_TOKEN` in the project's environment variables and redeploy.
+
+**Resume.** The public link `/assets/Vinit-Niwalkar-Resume.pdf` never changes. It
+is served by `server/routes/resume.routes.js`, which streams whichever revision
+is active from blob storage and falls back to the copy bundled with the
+deployment if storage is unreachable. Every upload gets a new object name, so
+replaced resumes stay downloadable from their own URL and are listed under
+**Previous versions** in the dashboard.
+
+**Certificates.** Each certificate document keeps its own file URL, which already
+changed on every upload, so there is no stable-path contract to honour. On blob
+storage the document stores the CDN URL directly and the public page downloads
+from the CDN without invoking a function; on the local provider it stores
+`/certificates/<name>.pdf` as before. Replacing or removing a certificate file
+deletes the superseded object, and existing rows pointing at `public/certificates/…`
+keep working.
+
+Verify the whole flow — including a cold start, which is what a redeploy does:
+
+```bash
+npm run verify:cms               # all scenarios
+npm run verify:cms -- E          # certificate-storage scenario only
+```
+
+The harness boots real child processes against the configured `MONGODB_URI`,
+restores the `resumes` collection afterwards, and only ever touches throwaway
+certificate documents it creates itself.
 
 ## 5. Start the backend (+ frontend)
 
@@ -148,11 +197,14 @@ portfolio/
 └── server/
     ├── server.js             # Express app entry
     ├── config/db.js          # Mongoose connection
+    ├── config/storage.js     # file-storage provider (Vercel Blob | local)
     ├── middleware/db.js      # DB-health guard (503s /api when DB is down)
     ├── models/               # Profile, Skill, Project, Experience,
-    │                         # Education, Certificate, Message
+    │                         # Education, Certificate, Resume, Message
     ├── controllers/          # one controller per resource
-    ├── routes/               # one router per resource
+    ├── routes/               # one router per resource, incl.
+    │   ├── resume.routes.js  # stable public resume URL
+    │   └── admin/            # protected admin routers
     └── seed/
         ├── seedData.js       # resume-derived seed content (source of truth)
         └── seed.js           # idempotent seeding + CLI (npm run seed)
@@ -162,7 +214,7 @@ portfolio/
 
 - If `GET /api/*` fails or returns `503`, the frontend swaps in its bundled fallback content — the page always renders.
 - The GitHub stat chip is fetched live only when reachable; it stays hidden on failure (graceful fallback).
-- The "Download Resume" button points to `public/assets/resume.pdf`. Drop your resume PDF there (create the `public/assets` folder) — until then the button shows a friendly notice instead of a dead link.
+- The "Download Resume" button always points to `/assets/Vinit-Niwalkar-Resume.pdf`. That path is served by the app (see **File storage** above): the active CMS revision when one is stored, otherwise the copy bundled at `public/assets/Vinit-Niwalkar-Resume.pdf`. Uploading from the admin dashboard replaces what visitors get without changing the link.
 - Project GitHub buttons appear **only** when a repository URL exists in the data; fake/live-demo URLs are intentionally omitted.
 
 ## Roadmap / admin-ready

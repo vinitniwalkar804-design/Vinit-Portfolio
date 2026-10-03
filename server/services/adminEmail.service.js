@@ -1,4 +1,21 @@
-const { getTransporter, isEmailConfigured } = require('../config/email');
+const { getTransporter, isEmailConfigured, describeEmailError } = require('../config/email');
+
+// Admin verification/reset mail shares the contact-form transporter, so it is
+// subject to the same failures. Log the classified reason without any secret.
+async function sendTemplated(mail, label) {
+  const transporter = getTransporter();
+  try {
+    const info = await transporter.sendMail(mail);
+    console.log(
+      `[email] ${label} ACCEPTED | response="${String(info.response || '').slice(0, 100)}" ` +
+        `messageId=${info.messageId || 'n/a'}`
+    );
+    return info;
+  } catch (err) {
+    console.error(`[email] ${label} FAILED | ${JSON.stringify(describeEmailError(err))}`);
+    throw err;
+  }
+}
 
 function escapeHtml(value) {
   return String(value)
@@ -41,14 +58,13 @@ async function sendVerificationEmail({ to, verifyUrl }) {
     'Confirm this address to finish setting up your portfolio admin access.\n\n' +
     verifyUrl;
 
-  const transporter = getTransporter();
-  return transporter.sendMail({
+  return sendTemplated({
     from: `"Vinit Niwalkar Portfolio" <${process.env.EMAIL_USER}>`,
     to,
     subject: 'Verify your Admin Email - Vinit Niwalkar Portfolio',
     text,
     html
-  });
+  }, 'admin-verify');
 }
 
 async function sendResetEmail({ to, resetUrl }) {
@@ -64,14 +80,13 @@ async function sendResetEmail({ to, resetUrl }) {
     'A password reset was requested for your portfolio admin account.\n\n' +
     resetUrl;
 
-  const transporter = getTransporter();
-  return transporter.sendMail({
+  return sendTemplated({
     from: `"Vinit Niwalkar Portfolio" <${process.env.EMAIL_USER}>`,
     to,
     subject: 'Reset your Admin Password - Vinit Niwalkar Portfolio',
     text,
     html
-  });
+  }, 'admin-reset');
 }
 
 module.exports = { sendVerificationEmail, sendResetEmail, isEmailConfigured };

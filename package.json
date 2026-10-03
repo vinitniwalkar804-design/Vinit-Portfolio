@@ -8,7 +8,9 @@
     "dev": "nodemon server/server.js",
     "seed": "node server/seed/seed.js",
     "seed:force": "node server/seed/seed.js --force",
-    "admin:init": "node server/scripts/admin-init.js"
+    "admin:init": "node server/scripts/admin-init.js",
+    "verify:cms": "node scripts/verify-cms-storage.js",
+    "verify:resume": "node scripts/verify-cms-storage.js"
   },
   "keywords": [
     "portfolio",
@@ -20,6 +22,7 @@
   ],
   "license": "MIT",
   "dependencies": {
+    "@vercel/blob": "^2.8.0",
     "bcryptjs": "^3.0.3",
     "cookie-parser": "^1.4.7",
     "cors": "^2.8.5",

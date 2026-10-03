@@ -1,4 +1,8 @@
-const { getTransporter } = require('../config/email');
+const {
+  getTransporter,
+  describeEmailError,
+  getEmailDiagnostics
+} = require('../config/email');
 
 function formatDate(date) {
   const d = date instanceof Date && !Number.isNaN(date.getTime()) ? date : new Date();
@@ -59,16 +63,48 @@ async function sendContactNotification({ name, email, message, createdAt }) {
   const subject = 'New Portfolio Contact Message — ' + name;
   const { text, html } = buildMail({ name, email, message, subject, createdAt });
   const transporter = getTransporter();
+  const d = getEmailDiagnostics();
   const fromName = (process.env.EMAIL_FROM_NAME || 'Portfolio Contact').trim();
   const to = process.env.CONTACT_RECEIVER || 'vinitniwalkar804@gmail.com';
-  return transporter.sendMail({
-    from: `"${fromName.replace(/"/g, "'")}" <${process.env.EMAIL_USER}>`,
-    to,
-    replyTo: email,
-    subject,
-    text,
-    html
-  });
+
+  // Never log the address itself — only its domain and shape — so logs stay
+  // safe to share. `fromSource` matters because a silent fallback to a hardcoded
+  // mailbox is a common reason a notification lands somewhere unexpected.
+  const toStr = String(to);
+  const toDomain = toStr.includes('@') ? toStr.split('@').pop() : 'unknown';
+  const toShapeValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(toStr);
+  const fromSource = process.env.CONTACT_RECEIVER ? 'CONTACT_RECEIVER' : 'hardcoded-default';
+  console.log(
+    `[email] notification ATTEMPT | host=${d.host} port=${d.port} mode=${d.tlsMode} ` +
+      `secure=${d.secure} from=EMAIL_USER(domain=${d.userDomain}, shapeValid=${d.userValidShape}) ` +
+      `to=${fromSource}(domain=${toDomain}, len=${toStr.length}, shapeValid=${toShapeValid}, ` +
+      `sameAsUser=${toStr === (process.env.EMAIL_USER || '').trim()}) | subject="${subject}"`
+  );
+
+  try {
+    const info = await transporter.sendMail({
+      from: `"${fromName.replace(/"/g, "'")}" <${process.env.EMAIL_USER}>`,
+      to,
+      replyTo: email,
+      subject,
+      text,
+      html
+    });
+
+    // Gmail accepting the message only means it was queued. Anything after
+    // this point (quota, spam folder, forwarding) is a delivery question, not
+    // an SMTP question, so it is reported separately.
+    console.log(
+      `[email] send ACCEPTED by SMTP | accepted=${Array.isArray(info.accepted) ? info.accepted.length : 0} ` +
+        `rejected=${Array.isArray(info.rejected) ? info.rejected.length : 0} ` +
+        `response="${String(info.response || '').slice(0, 120)}" ` +
+        `messageId=${info.messageId || 'n/a'} | note=accepted!=delivered (check inbox/spam/quota)`
+    );
+    return info;
+  } catch (err) {
+    console.error(`[email] send FAILED | ${JSON.stringify(describeEmailError(err))}`);
+    throw err;
+  }
 }
 
 module.exports = { sendContactNotification };

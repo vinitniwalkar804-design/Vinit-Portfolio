@@ -778,13 +778,23 @@
       var panel = $('#resumePanel', content);
       api('/api/admin/resume').then(function (d) {
         var m = d.data || {};
+        var providerLabel = { 'vercel-blob': 'Vercel Blob (durable)', 'local': 'Local filesystem (development only)', 'bundled': 'Bundled with the deployment', 'none': 'not found' }[m.storageProvider] || m.storageProvider || 'unknown';
         panel.innerHTML =
           '<div class="panel-title">Active resume</div>' +
           '<dl class="kv" style="margin:12px 0">' +
           '<dt>File</dt><dd><a href="' + esc(m.url) + '" target="_blank" rel="noopener">' + esc(m.fileName || m.url) + '</a></dd>' +
           '<dt>Size</dt><dd>' + (m.size ? (Math.round(m.size / 1024 * 10) / 10) + ' KB' : 'unknown') + '</dd>' +
           '<dt>Last uploaded</dt><dd>' + esc(fmtDate(m.uploadedAt)) + '</dd>' +
+          '<dt>Storage</dt><dd>' + esc(providerLabel) + (m.present === false ? ' &middot; <span style="color:var(--danger,#f87171)">file missing</span>' : '') + '</dd>' +
           '</dl>' +
+          ((m.archive && m.archive.length)
+            ? '<div class="panel-title" style="margin-top:4px">Previous versions</div>' +
+              '<dl class="kv" style="margin:12px 0">' +
+              m.archive.map(function (a) {
+                return '<dt>' + esc(fmtDate(a.uploadedAt)) + '</dt><dd>' + (a.size ? (Math.round(a.size / 1024 * 10) / 10) + ' KB' : 'size unknown') + '</dd>';
+              }).join('') +
+              '</dl>'
+            : '') +
           '<div style="border:none;border-top:1px solid var(--border);margin:16px 0"></div>' +
           '<div class="panel-title">Replace resume</div>' +
           '<div class="panel-sub">Uploading replaces the active file while preserving the public URL. The previous version is archived automatically.</div>' +

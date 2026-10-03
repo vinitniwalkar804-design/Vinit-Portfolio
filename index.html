@@ -38,6 +38,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet" />
 
   <link rel="stylesheet" href="css/style.css" />
+<link rel="stylesheet" href="css/effects.css" />
 </head>
 <body>
   <a class="skip-link" href="#home">Skip to content</a>
@@ -97,6 +98,7 @@
   <main id="main">
     <!-- ============ HERO ============ -->
     <section class="hero section" id="home" aria-label="Introduction">
+      <div class="hero-field" id="heroField" aria-hidden="true"></div>
       <div class="container hero-grid">
         <div class="hero-copy">
           <span class="hero-glow" id="heroGlow" aria-hidden="true"></span>
@@ -233,11 +235,13 @@
       </div>
     </section>
     <section class="section" id="skills" aria-labelledby="skills-title">
+      <div class="skills-field" id="skillsField" aria-hidden="true"></div>
       <div class="container">
         <div class="section-head reveal" data-reveal>
           <span class="section-eyebrow">02 &middot; Skills</span>
           <h2 class="section-title" id="skills-title">Tech Stack</h2>
           <p class="section-sub">The tools and technologies I work with across the full stack.</p>
+          <p class="skills-field-hint">Hover a technology to trace it through the field.</p>
         </div>
         <div class="skills-filter" id="skillsFilter" hidden></div>
         <div class="skills-grid" id="skillsGrid"></div>
@@ -516,5 +520,6 @@
   <div class="cursor-ring" id="cursorRing" aria-hidden="true"></div>
 
   <script src="js/main.js" defer></script>
+  <script type="module" src="js/threeui/index.js"></script>
 </body>
 </html>

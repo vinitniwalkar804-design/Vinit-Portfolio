@@ -1,5 +1,6 @@
 const Message = require('../models/Message');
 const { sendContactNotification } = require('../services/email.service');
+const { classifyEmailError, describeEmailError } = require('../config/email');
 
 const recentSubmissions = new Map();
 const DEDUPE_MS = 60 * 1000;
@@ -52,14 +53,20 @@ exports.submitContact = async (req, res) => {
   let saved;
   try {
     saved = await Message.create(clean);
+    console.log(`[contact] MongoDB save OK | id=${saved._id}`);
   } catch (err) {
     if (err.name === 'ValidationError') {
       const messages = Object.values(err.errors).map((e) => e.message);
       return res.status(400).json({ success: false, message: messages.join(' ') });
     }
-    console.error('[contact] MongoDB save failed:', err.message);
+    // DB failure: nothing was stored, so no email is attempted.
+    console.error('[contact] MongoDB save FAILED:', err.message);
     return res.status(503).json({ success: false, message: 'Could not save your message right now. Please try again later.' });
   }
+
+  // Only reached once the document is persisted, so a missing email can never
+  // lose a contact message.
+  console.log(`[contact] DB save succeeded (id=${saved._id}); starting email notification...`);
 
   sendContactNotification({
     name: clean.name,
@@ -67,7 +74,12 @@ exports.submitContact = async (req, res) => {
     message: clean.message,
     createdAt: saved.createdAt
   })
-    .then(() => {
+    .then((info) => {
+      console.log(
+        `[contact] emailStatus=sent | id=${saved._id} | ` +
+          `accepted=${Array.isArray(info && info.accepted) ? info.accepted.length : 'n/a'} ` +
+          `rejected=${Array.isArray(info && info.rejected) ? info.rejected.length : 'n/a'}`
+      );
       res.status(201).json({
         success: true,
         emailStatus: 'sent',
@@ -76,22 +88,35 @@ exports.submitContact = async (req, res) => {
       });
     })
     .catch((err) => {
-      if (err && err.emailNotConfigured) {
-        console.warn('[contact] Email notification skipped: not configured (EMAIL_HOST/EMAIL_USER/EMAIL_PASSWORD missing).');
+      const classification = classifyEmailError(err);
+
+      if (classification === 'NOT_CONFIGURED' || classification === 'SMTP_CONFIG_INVALID') {
+        console.warn(
+          `[contact] emailStatus=not_configured | id=${saved._id} | ` +
+            `${describeEmailError(err).message} | message IS saved in MongoDB`
+        );
         res.status(201).json({
           success: true,
           emailStatus: 'not_configured',
           message: 'Message saved successfully, but the email notification is not configured yet.',
           id: saved._id
         });
-      } else {
-        console.error('[contact] Message saved, but email notification failed:', err.message);
-        res.status(201).json({
-          success: true,
-          emailStatus: 'failed',
-          message: 'Message saved successfully! The email notification failed, but your message was received — please try again later if you need a reply.',
-          id: saved._id
-        });
+        return;
       }
+
+      // Everything else: the message is safe in MongoDB, the email is not.
+      // The classification separates an auth problem (fix the credentials)
+      // from a network problem (fix egress/DNS) from a rejection.
+      console.error(
+        `[contact] emailStatus=failed | id=${saved._id} | classification=${classification} | ` +
+          `${JSON.stringify(describeEmailError(err))} | message IS saved in MongoDB`
+      );
+      res.status(201).json({
+        success: true,
+        emailStatus: 'failed',
+        emailFailure: classification,
+        message: 'Message saved successfully! The email notification failed, but your message was received — please try again later if you need a reply.',
+        id: saved._id
+      });
     });
 };

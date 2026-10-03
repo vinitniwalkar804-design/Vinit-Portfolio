@@ -21,3 +21,8 @@ Thumbs.db
 dist/
 coverage/
 cookies.txt
+mongo-backup/
+
+# Superseded resume copies written by the local storage provider.
+# Production keeps revisions in Vercel Blob instead - nothing to commit.
+public/assets/_archive/

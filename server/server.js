@@ -25,20 +25,36 @@ if (clientOrigin) {
 }
 
 // CMS admin assets — force no-cache so a stale browser build never lingers
-  app.use('/admin', function (_req, res, next) {
-    res.set('Cache-Control', 'no-cache, must-revalidate');
-    next();
-  });
+app.use('/admin', function (_req, res, next) {
+  res.set('Cache-Control', 'no-cache, must-revalidate');
+  next();
+});
 
-  app.use(express.static(path.join(__dirname, '..', 'public')));
+// Stable public resume path. Mounted BEFORE express.static so the CMS-managed
+// revision always wins over the copy bundled in the deployment, and so a
+// replace from the admin dashboard is served immediately.
+app.use(require('./routes/resume.routes'));
+
+app.use(express.static(path.join(__dirname, '..', 'public')));
 app.use('/css', express.static(path.join(__dirname, '..', 'src', 'css')));
 app.use('/js', express.static(path.join(__dirname, '..', 'src', 'js')));
 
 app.get('/api/health', (_req, res) => {
   const mongoose = require('mongoose');
+  const { isEmailConfigured, getEmailDiagnostics } = require('./config/email');
+
+  // Only a boolean is exposed publicly. The detailed block (host, port, which
+  // variables are missing, shape warnings) requires EMAIL_DIAGOSTICS=true, so
+  // a production caller can confirm SMTP readiness without publishing secrets.
+  const email = { configured: isEmailConfigured() };
+  if (process.env.EMAIL_DIAGOSTICS === 'true') {
+    email.diagnostics = getEmailDiagnostics();
+  }
+
   res.json({
     status: 'ok',
     db: mongoose.connection.readyState === 1 ? 'connected' : 'disconnected',
+    email,
     time: new Date().toISOString()
   });
 });
@@ -114,6 +130,14 @@ console.log(
 
 if (!process.env.JWT_SECRET) {
   console.warn('[env] JWT_SECRET NOT set on this runtime.');
+}
+
+// Surfaces SMTP readiness in the runtime log (Vercel: function logs) so a
+// missing or malformed EMAIL_* variable is visible without sending a message.
+try {
+  require('./config/email').logEmailStartup();
+} catch (err) {
+  console.warn(`[email] startup diagnostic unavailable: ${err.message}`);
 }
 
 (async () => {
