@@ -3,62 +3,32 @@
   "version": 2,
   "builds": [
     {
+      "src": "build.sh",
+      "use": "@vercel/static-build",
+      "config": {
+        "distDir": "dist"
+      }
+    },
+    {
       "src": "backend/server.js",
-      "use": "@vercel/node"
+      "use": "@vercel/node",
+      "config": {
+        "includeFiles": [
+          "frontend/index.html",
+          "frontend/public/**",
+          "frontend/src/**",
+          "database/seeds/**"
+        ]
+      }
     }
   ],
   "rewrites": [
-    {
-      "source": "/api/(.*)",
-      "destination": "/backend/server.js"
-    },
-    {
-      "source": "/admin(.*)",
-      "destination": "/backend/server.js"
-    },
-    {
-      "source": "/vinit-control(.*)",
-      "destination": "/backend/server.js"
-    },
-    {
-      "source": "/assets/Vinit-Niwalkar-Resume.pdf",
-      "destination": "/backend/server.js"
-    },
-    {
-      "source": "/css/(.*)",
-      "destination": "/frontend/src/css/$1"
-    },
-    {
-      "source": "/js/(.*)",
-      "destination": "/frontend/src/js/$1"
-    },
-    {
-      "source": "/certificates/(.*)",
-      "destination": "/frontend/public/certificates/$1"
-    },
-    {
-      "source": "/images/(.*)",
-      "destination": "/frontend/public/images/$1"
-    },
-    {
-      "source": "/assets/(.*)",
-      "destination": "/frontend/public/assets/$1"
-    },
-    {
-      "source": "/favicon.svg",
-      "destination": "/frontend/public/favicon.svg"
-    },
-    {
-      "source": "/robots.txt",
-      "destination": "/frontend/public/robots.txt"
-    },
-    {
-      "source": "/(.*\\..*)",
-      "destination": "/frontend/$1"
-    },
-    {
-      "source": "/(.*)",
-      "destination": "/frontend/index.html"
-    }
+    { "source": "/api", "destination": "/backend/server.js" },
+    { "source": "/api/:path*", "destination": "/backend/server.js" },
+    { "source": "/vinit-control", "destination": "/backend/server.js" },
+    { "source": "/vinit-control/:path*", "destination": "/backend/server.js" },
+    { "source": "/admin", "destination": "/backend/server.js" },
+    { "source": "/admin/:path*", "destination": "/backend/server.js" },
+    { "source": "/assets/Vinit-Niwalkar-Resume.pdf", "destination": "/backend/server.js" }
   ]
 }
