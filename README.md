@@ -74,14 +74,14 @@ CLIENT_ORIGIN=
 ### File storage (required on Vercel)
 
 A Vercel function's filesystem is **read-only** and thrown away when the instance
-is recycled, so uploaded files cannot be written into `public/`.
-`server/config/storage.js` picks a provider automatically for **both** CMS
+is recycled, so uploaded files cannot be written into `frontend/public/`.
+`backend/config/storage.js` picks a provider automatically for **both** CMS
 uploads (resume and certificate PDFs):
 
 | Provider        | When                              | Behaviour                                                                       |
 | --------------- | --------------------------------- | ------------------------------------------------------------------------------- |
 | `vercel-blob`   | `BLOB_READ_WRITE_TOKEN` is set    | Uploads go to durable Blob storage.                                              |
-| `local`         | Token unset and not on Vercel     | Uploads go to `public/...`; the replaced resume is copied to `_archive/`.        |
+| `local`         | Token unset and not on Vercel     | Uploads go to `frontend/public/...`; the replaced resume is copied to `_archive/`. |
 
 On Vercel without a token, uploads are **rejected with 503** instead of silently
 writing to a filesystem that will be discarded — that silent failure is what
@@ -93,7 +93,7 @@ access → connect it to the project (or create a read-write token) → set
 `BLOB_READ_WRITE_TOKEN` in the project's environment variables and redeploy.
 
 **Resume.** The public link `/assets/Vinit-Niwalkar-Resume.pdf` never changes. It
-is served by `server/routes/resume.routes.js`, which streams whichever revision
+is served by `backend/routes/resume.routes.js`, which streams whichever revision
 is active from blob storage and falls back to the copy bundled with the
 deployment if storage is unreachable. Every upload gets a new object name, so
 replaced resumes stay downloadable from their own URL and are listed under
@@ -104,7 +104,7 @@ changed on every upload, so there is no stable-path contract to honour. On blob
 storage the document stores the CDN URL directly and the public page downloads
 from the CDN without invoking a function; on the local provider it stores
 `/certificates/<name>.pdf` as before. Replacing or removing a certificate file
-deletes the superseded object, and existing rows pointing at `public/certificates/…`
+deletes the superseded object, and existing rows pointing at `frontend/public/certificates/…`
 keep working.
 
 Verify the whole flow — including a cold start, which is what a redeploy does:
@@ -117,6 +117,39 @@ npm run verify:cms -- E          # certificate-storage scenario only
 The harness boots real child processes against the configured `MONGODB_URI`,
 restores the `resumes` collection afterwards, and only ever touches throwaway
 certificate documents it creates itself.
+
+## 4b. Deployment (Vercel)
+
+The whole app ships as **one** serverless function. `vercel.json` points the
+`@vercel/node` builder at `backend/server.js` and routes **every** request to it:
+
+```jsonc
+"builds":  [{ "src": "backend/server.js", "use": "@vercel/node", "config": { "includeFiles": [...] } }],
+"routes":  [{ "src": "/(.*)", "dest": "backend/server.js" }]
+```
+
+That single function serves the API, the admin CMS *and* the static frontend, so
+the project root stays the Vercel root directory — there is no separate
+"frontend build" step, and no build command to configure.
+
+`includeFiles` is what puts the non-JavaScript frontend into the bundle, because
+the static mounts are resolved with `path.join()` at runtime and file tracing
+cannot see them. **All four entries are load-bearing:**
+
+| Entry                     | Needed because                                                    |
+| ------------------------- | ----------------------------------------------------------------- |
+| `frontend/public/**`      | `express.static` — favicon, images, certificates, admin CMS, bundled resume |
+| `frontend/src/**`         | the `/css` and `/js` mounts — stylesheets, `main.js`, ThreeUI modules |
+| `frontend/index.html`     | served at `/`                                                     |
+| `database/seeds/**`       | `require('../database/seeds/seed')` for the cold-start seed        |
+
+> If `database/seeds/**` is dropped from `includeFiles`, the app still deploys
+> and still serves — but seeding silently stops, because the call sits inside a
+> `try/catch`. Keep it.
+
+Environment variables (`MONGODB_URI`, `JWT_SECRET`, `BLOB_READ_WRITE_TOKEN`,
+`EMAIL_*`, …) are set in the Vercel dashboard. No `.env` file is uploaded —
+`.vercelignore` excludes it.
 
 ## 5. Start the backend (+ frontend)
 
@@ -143,7 +176,13 @@ npm run seed:force    # wipes & re-seeds the six content collections
 
 ## 6. Start the frontend on its own
 
-Not required — the Express server already serves `index.html`, `css/style.css`, `js/main.js` and all `/public` assets. If you prefer to serve static files separately, any static server works against the `public/` + `src/` + root `index.html`, but you must also set `CLIENT_ORIGIN` in `.env` to allow the API calls from a different origin.
+Not required — the Express server already serves `index.html`, `css/style.css`, `js/main.js` and everything under `frontend/public`. If you prefer to serve static files separately, any static server works against `frontend/` (serving `index.html` at `/` with `src/` and `public/` beneath it), but you must also set `CLIENT_ORIGIN` in `.env` to allow the API calls from a different origin.
+
+Note that `index.html` references its assets **relatively** (`css/style.css`,
+`js/main.js`, `images/...`) because the server mounts `frontend/src/css` at `/css`
+and `frontend/src/js` at `/js`. Serving `frontend/` from a static host therefore
+needs those two directory mappings mirrored — serving `frontend/public` alone is
+not enough.
 
 ## 7. MongoDB — database & collections
 
@@ -181,40 +220,70 @@ Security notes: JSON body limited to 100 KB, `x-powered-by` disabled, CORS disab
 
 ## 9. Project structure
 
+One repository, three concerns. `frontend/` is static and is served *by* the
+backend, so a single `npm start` runs the whole app.
+
 ```
 portfolio/
-├── index.html                # semantic, SEO-ready frontend shell
-├── package.json
-├── .env.example              # template (copy to .env)
-├── .gitignore
-├── public/
-│   ├── favicon.svg
-│   ├── robots.txt
-│   └── images/profile/profile.jpg
-├── src/
-│   ├── css/style.css         # design system + components + responsive
-│   └── js/main.js            # rendering, fallback data, interactions
-└── server/
-    ├── server.js             # Express app entry
-    ├── config/db.js          # Mongoose connection
-    ├── config/storage.js     # file-storage provider (Vercel Blob | local)
-    ├── middleware/db.js      # DB-health guard (503s /api when DB is down)
-    ├── models/               # Profile, Skill, Project, Experience,
-    │                         # Education, Certificate, Resume, Message
-    ├── controllers/          # one controller per resource
-    ├── routes/               # one router per resource, incl.
-    │   ├── resume.routes.js  # stable public resume URL
-    │   └── admin/            # protected admin routers
-    └── seed/
-        ├── seedData.js       # resume-derived seed content (source of truth)
-        └── seed.js           # idempotent seeding + CLI (npm run seed)
+├── frontend/                    # everything the browser loads
+│   ├── index.html               # semantic, SEO-ready frontend shell
+│   ├── public/
+│   │   ├── admin/               # admin CMS pages + css/js (unlinked from the public site)
+│   │   ├── assets/              # bundled resume copy (+ local _archive/, git-ignored)
+│   │   ├── certificates/        # bundled certificate PDFs
+│   │   ├── images/profile/profile.jpg
+│   │   ├── favicon.svg
+│   │   └── robots.txt
+│   └── src/
+│       ├── css/style.css        # design system + components + responsive
+│       ├── css/effects.css      # animation / effect layer
+│       └── js/
+│           ├── main.js          # rendering, fallback data, interactions
+│           └── threeui/         # WebGL hero field + skills constellation
+│
+├── backend/                     # Express API + CMS + static file server
+│   ├── server.js                # Express app entry (also the Vercel function entry)
+│   ├── config/
+│   │   ├── db.js                # Mongoose connection + cold-start retry
+│   │   ├── storage.js           # file-storage provider (Vercel Blob | local)
+│   │   ├── auth.js              # JWT + allowed-admin-email config
+│   │   └── email.js             # SMTP transport + diagnostics
+│   ├── middleware/              # adminAuth, db health guard, rate limiting
+│   ├── models/                  # Mongoose schemas — Profile, Skill, Project,
+│   │                            #   Experience, Education, Certificate, Resume,
+│   │                            #   Message, Admin
+│   ├── controllers/             # one controller per resource (+ admin/)
+│   ├── routes/                  # one router per resource (+ admin/)
+│   │   ├── resume.routes.js     # stable public resume URL
+│   │   └── admin/               # protected admin routers
+│   ├── services/                # email + admin-email delivery
+│   ├── utils/                   # asyncHandler, input validation
+│   └── scripts/admin-init.js    # create/reset the CMS admin (npm run admin:init)
+│
+├── database/                    # MongoDB tooling only — no data, no credentials
+│   ├── README.md                # collections, connection, seeding, backup policy
+│   └── seeds/
+│       ├── seedData.js          # seed content (source of truth)
+│       └── seed.js              # idempotent seeding + CLI (npm run seed)
+│
+├── scripts/
+│   └── verification/verify-cms-storage.js   # npm run verify:cms
+│
+├── package.json                 # single package: serves frontend + backend
+├── vercel.json                  # single serverless function + included frontend files
+├── .env.example                 # template (copy to .env)
+└── .gitignore
 ```
+
+There is intentionally no `frontend/package.json`: the frontend is plain
+HTML/CSS/vanilla JS with no build step and no client-side dependencies, so it
+shares the root `package.json` (which only installs backend packages).
 
 ## Client-side resilience
 
 - If `GET /api/*` fails or returns `503`, the frontend swaps in its bundled fallback content — the page always renders.
 - The GitHub stat chip is fetched live only when reachable; it stays hidden on failure (graceful fallback).
-- The "Download Resume" button always points to `/assets/Vinit-Niwalkar-Resume.pdf`. That path is served by the app (see **File storage** above): the active CMS revision when one is stored, otherwise the copy bundled at `public/assets/Vinit-Niwalkar-Resume.pdf`. Uploading from the admin dashboard replaces what visitors get without changing the link.
+- The "Download Resume" button always points to `/assets/Vinit-Niwalkar-Resume.pdf`. That path is served by the app (see **File storage** above): the active CMS revision when one is stored, otherwise the copy bundled at `frontend/public/assets/Vinit-Niwalkar-Resume.pdf`. Uploading from the admin dashboard replaces what visitors get without changing the link.
 - Project GitHub buttons appear **only** when a repository URL exists in the data; fake/live-demo URLs are intentionally omitted.
 
 ## Roadmap / admin-ready

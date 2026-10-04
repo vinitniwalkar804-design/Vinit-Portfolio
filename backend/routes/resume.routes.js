@@ -33,7 +33,7 @@ async function activeRecord() {
  *
  *   - durable provider (production) -> streams the active revision from blob
  *   - local provider / no record / blob unreachable -> next(), so
- *     express.static serves public/assets/Vinit-Niwalkar-Resume.pdf
+ *     express.static serves frontend/public/assets/Vinit-Niwalkar-Resume.pdf
  *
  * Mounted before static so a bundled file can never shadow the active resume,
  * and responses are no-store so a replace is visible immediately and never

@@ -6,6 +6,11 @@ const cors = require('cors');
 const cookieParser = require('cookie-parser');
 const connectDB = require('./config/db');
 
+// The frontend is static and served by this same app, so it lives in a sibling
+// folder rather than next to server.js. Every static mount is resolved from this
+// one constant so the layout stays described in a single place.
+const FRONTEND_ROOT = path.join(__dirname, '..', 'frontend');
+
 const app = express();
 
 app.use(express.json({ limit: '100kb' }));
@@ -35,9 +40,9 @@ app.use('/admin', function (_req, res, next) {
 // replace from the admin dashboard is served immediately.
 app.use(require('./routes/resume.routes'));
 
-app.use(express.static(path.join(__dirname, '..', 'public')));
-app.use('/css', express.static(path.join(__dirname, '..', 'src', 'css')));
-app.use('/js', express.static(path.join(__dirname, '..', 'src', 'js')));
+app.use(express.static(path.join(FRONTEND_ROOT, 'public')));
+app.use('/css', express.static(path.join(FRONTEND_ROOT, 'src', 'css')));
+app.use('/js', express.static(path.join(FRONTEND_ROOT, 'src', 'js')));
 
 app.get('/api/health', (_req, res) => {
   const mongoose = require('mongoose');
@@ -70,7 +75,7 @@ app.use('/api/admin', require('./routes/admin/index'));
 
 // Admin CMS pages (unlinked from the public site; all data access is protected).
 const adminPage = (file) => (_req, res) => {
-  res.sendFile(path.join(__dirname, '..', 'public', 'admin', file));
+  res.sendFile(path.join(FRONTEND_ROOT, 'public', 'admin', file));
 };
 app.get('/vinit-control', adminPage('login.html'));
 app.get('/vinit-control/login', adminPage('login.html'));
@@ -80,7 +85,7 @@ app.get('/vinit-control/reset-password', adminPage('reset.html'));
 app.get('/vinit-control/dashboard', adminPage('dashboard.html'));
 
 app.get('/', (_req, res) => {
-  res.sendFile(path.join(__dirname, '..', 'index.html'));
+  res.sendFile(path.join(FRONTEND_ROOT, 'index.html'));
 });
 
 app.use('/api', (_req, res) => {
@@ -146,7 +151,11 @@ try {
     await connectDB();
     dbConnected = true;
 
-    const { seedDatabase } = require('./seed/seed');
+    // Seeding lives under database/ with the rest of the data layer. It is a
+    // static require, so Vercel's file tracing picks it up; vercel.json also
+    // lists database/seeds/** in includeFiles so the cold-start seed can never
+    // be missing from the function bundle.
+    const { seedDatabase } = require('../database/seeds/seed');
     const results = await seedDatabase();
     console.log(`[seed] ${JSON.stringify(results)}`);
   } catch (err) {

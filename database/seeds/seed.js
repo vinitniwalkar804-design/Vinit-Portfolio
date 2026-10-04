@@ -1,11 +1,11 @@
 const mongoose = require('mongoose');
 
-const Profile = require('../models/Profile');
-const Skill = require('../models/Skill');
-const Project = require('../models/Project');
-const Experience = require('../models/Experience');
-const Education = require('../models/Education');
-const Certificate = require('../models/Certificate');
+const Profile = require('../../backend/models/Profile');
+const Skill = require('../../backend/models/Skill');
+const Project = require('../../backend/models/Project');
+const Experience = require('../../backend/models/Experience');
+const Education = require('../../backend/models/Education');
+const Certificate = require('../../backend/models/Certificate');
 
 const seedData = require('./seedData');
 

@@ -2,15 +2,15 @@
   "name": "vinit-niwalkar-portfolio",
   "version": "1.0.0",
   "description": "Premium full-stack portfolio for Vinit Niwalkar — Full Stack Developer & AI / Data Science Engineer. Vanilla HTML/CSS/JS frontend, Node.js + Express + MongoDB backend.",
-  "main": "server/server.js",
+  "main": "backend/server.js",
   "scripts": {
-    "start": "node server/server.js",
-    "dev": "nodemon server/server.js",
-    "seed": "node server/seed/seed.js",
-    "seed:force": "node server/seed/seed.js --force",
-    "admin:init": "node server/scripts/admin-init.js",
-    "verify:cms": "node scripts/verify-cms-storage.js",
-    "verify:resume": "node scripts/verify-cms-storage.js"
+    "start": "node backend/server.js",
+    "dev": "nodemon backend/server.js",
+    "seed": "node database/seeds/seed.js",
+    "seed:force": "node database/seeds/seed.js --force",
+    "admin:init": "node backend/scripts/admin-init.js",
+    "verify:cms": "node scripts/verification/verify-cms-storage.js",
+    "verify:resume": "node scripts/verification/verify-cms-storage.js"
   },
   "keywords": [
     "portfolio",

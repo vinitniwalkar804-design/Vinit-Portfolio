@@ -4,14 +4,14 @@
  * The portfolio runs on Vercel serverless functions, where the deployment
  * bundle is READ-ONLY and any write to it is discarded when the instance is
  * recycled. A resume upload therefore cannot be implemented by writing into
- * `public/`: the write either fails with EROFS, or lands in an ephemeral
+ * `frontend/public/`: the write either fails with EROFS, or lands in an ephemeral
  * scratch directory that the CDN never serves and the next cold start forgets.
  *
  * Providers:
  *   vercel-blob  - durable object storage (production). Requires
  *                  BLOB_READ_WRITE_TOKEN. Selected automatically.
- *   local        - writes into the git-served public/ tree. Local development
- *                  only, and never used on Vercel.
+ *   local        - writes into the git-served frontend/public tree. Local
+ *                  development only, and never used on Vercel.
  *
  * All file I/O from the CMS goes through this module so the provider can be
  * swapped without touching controllers or routes.
@@ -39,7 +39,9 @@ if (BLOB_TOKEN) {
 const PROVIDER = blob ? 'vercel-blob' : 'local';
 
 const PROXY_AUTH_DIRS = { certificates: 'certificates', assets: 'assets' };
-const PUBLIC_ROOT = path.join(__dirname, '..', '..', 'public');
+// The local provider mirrors the served public tree. That tree is the frontend's,
+// a sibling of backend/, so it is two levels up from here rather than one.
+const PUBLIC_ROOT = path.join(__dirname, '..', '..', 'frontend', 'public');
 
 /**
  * The public resume contract. index.html hard-codes this href, so it must never
@@ -262,7 +264,7 @@ async function replaceResume({ buffer, originalName, mimeType }) {
     };
   }
 
-  // Local development: write into the served public/ tree and keep a copy of
+  // Local development: write into the served frontend/public tree and keep a copy of
   // the outgoing revision so nothing is lost.
   const assetsDir = path.join(PUBLIC_ROOT, 'assets');
   ensureDir(assetsDir);
@@ -347,7 +349,7 @@ async function latestRecord() {
 
 /**
  * Blob prefix for a certificate file. Mirrors the local public layout
- * (public/certificates/x.pdf -> certificates/x.pdf) so a row written under one
+ * (frontend/public/certificates/x.pdf -> certificates/x.pdf) so a row written under one
  * provider stays recognisable under the other.
  */
 function blobCategoryPrefix(category) {
@@ -357,7 +359,7 @@ function blobCategoryPrefix(category) {
 }
 
 /**
- * Saves a PDF under public/{category} (local) or {category}/ in blob storage.
+ * Saves a PDF under frontend/public/{category} (local) or {category}/ in blob storage.
  * Generates a safe, unique, random-suffixed filename derived from the title -
  * never uses the raw uploaded name, so path traversal / collision is not
  * possible.

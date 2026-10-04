@@ -14,7 +14,7 @@ const { RESUME_URL } = require('../config/storage');
  * `archive` snapshots the outgoing revision on every replace, so the previous
  * resume is never silently destroyed. Object storage keeps every revision
  * addressable at its own `storageUrl`; the local provider keeps a timestamped
- * copy under public/assets/_archive/.
+ * copy under frontend/public/assets/_archive/.
  */
 const archiveEntry = new mongoose.Schema(
   {

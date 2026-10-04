@@ -6,4 +6,4 @@ node_modules/
 *.log
 cookies.txt
 mongo-backup/
-public/assets/_archive/
+frontend/public/assets/_archive/

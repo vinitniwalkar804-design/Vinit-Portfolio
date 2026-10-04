@@ -1,10 +1,10 @@
 /**
  * CMS storage verification harness (resume + certificates).
  *
- *   node scripts/verify-cms-storage.js            # run every scenario
- *   node scripts/verify-cms-storage.js C          # run one scenario
+ *   node scripts/verification/verify-cms-storage.js     # run every scenario
+ *   node scripts/verification/verify-cms-storage.js C   # run one scenario
  *
- * Each "function instance" is a real child process running server/server.js, so
+ * Each "function instance" is a real child process running backend/server.js, so
  * every restart is a genuine cold start (fresh module graph, fresh /tmp, only
  * MongoDB + the blob store carry over). That is exactly the Vercel model.
  *
@@ -36,7 +36,7 @@ const RESUME_PATH = '/assets/Vinit-Niwalkar-Resume.pdf';
 // =============================================================================
 
 function erofs() {
-  const e = new Error("EROFS: read-only file system, open '/var/task/public/assets/Vinit-Niwalkar-Resume.pdf'");
+  const e = new Error("EROFS: read-only file system, open '/var/task/frontend/public/assets/Vinit-Niwalkar-Resume.pdf'");
   e.code = 'EROFS';
   e.errno = -30;
   e.syscall = 'open';
@@ -241,14 +241,14 @@ async function childMain() {
   else if (scenario === 'B') makeWritesEphemeral(tmpDir);
   else if (scenario === 'C') installFakeBlob(storeDir, cdnHost);
 
-  const app = require(path.join(ROOT, 'server', 'server.js'));
+  const app = require(path.join(BACKEND, 'server.js'));
   const server = http.createServer(app);
   await new Promise((resolve, reject) => {
     server.once('error', reject);
     server.listen(port, '127.0.0.1', resolve);
   });
 
-  const storage = require(path.join(ROOT, 'server', 'config', 'storage.js'));
+  const storage = require(path.join(BACKEND, 'config', 'storage.js'));
   process.stdout.write(`READY ${JSON.stringify({ provider: storage.PROVIDER, pid: process.pid })}\n`);
 
   const bye = () => { try { require('mongoose').disconnect(); } catch (_) {} process.exit(0); };
@@ -256,7 +256,11 @@ async function childMain() {
   process.on('SIGINT', bye);
 }
 
-const ROOT = path.join(__dirname, '..');
+// The harness lives in scripts/verification/, so the repository root is two
+// levels up. BACKEND and PUBLIC_DIR are the only two paths the scenarios touch.
+const ROOT = path.join(__dirname, '..', '..');
+const BACKEND = path.join(ROOT, 'backend');
+const PUBLIC_DIR = path.join(ROOT, 'frontend', 'public');
 
 // =============================================================================
 // driver
@@ -348,7 +352,7 @@ const instanceLogs = [];
  */
 async function snapshotResumeCollection() {
   const mongoose = require(path.join(ROOT, 'node_modules', 'mongoose'));
-  const Resume = require(path.join(ROOT, 'server', 'models', 'Resume'));
+  const Resume = require(path.join(BACKEND, 'models', 'Resume'));
   await mongoose.connect(process.env.MONGODB_URI, { serverSelectionTimeoutMS: 10000 });
   const docs = await Resume.find().lean();
   await mongoose.disconnect();
@@ -357,7 +361,7 @@ async function snapshotResumeCollection() {
 
 async function restoreResumeCollection(docs) {
   const mongoose = require(path.join(ROOT, 'node_modules', 'mongoose'));
-  const Resume = require(path.join(ROOT, 'server', 'models', 'Resume'));
+  const Resume = require(path.join(BACKEND, 'models', 'Resume'));
   await mongoose.connect(process.env.MONGODB_URI, { serverSelectionTimeoutMS: 10000 });
   await Resume.deleteMany({});
   if (docs.length) await Resume.insertMany(docs);
@@ -368,7 +372,7 @@ async function restoreResumeCollection(docs) {
 
 async function countResumeRecords() {
   const mongoose = require(path.join(ROOT, 'node_modules', 'mongoose'));
-  const Resume = require(path.join(ROOT, 'server', 'models', 'Resume'));
+  const Resume = require(path.join(BACKEND, 'models', 'Resume'));
   await mongoose.connect(process.env.MONGODB_URI, { serverSelectionTimeoutMS: 10000 });
   const n = await Resume.countDocuments();
   await mongoose.disconnect();
@@ -381,7 +385,7 @@ const VERIFY_TAG = '__verify-';
 
 async function withCertificateDb(fn) {
   const mongoose = require(path.join(ROOT, 'node_modules', 'mongoose'));
-  const Certificate = require(path.join(ROOT, 'server', 'models', 'Certificate'));
+  const Certificate = require(path.join(BACKEND, 'models', 'Certificate'));
   await mongoose.connect(process.env.MONGODB_URI, { serverSelectionTimeoutMS: 10000 });
   try {
     return await fn(Certificate);
@@ -471,13 +475,13 @@ async function login(port) {
   say(`sandbox : ${sandbox}`);
   say(`resume  : ${RESUME_PATH}`);
 
-  const originalBundle = path.join(ROOT, 'public', 'assets', 'Vinit-Niwalkar-Resume.pdf');
+  const originalBundle = path.join(PUBLIC_DIR, 'assets', 'Vinit-Niwalkar-Resume.pdf');
   const hadBundle = fs.existsSync(originalBundle);
   const originalBytes = hadBundle ? fs.readFileSync(originalBundle) : null;
-  const archiveDir = path.join(ROOT, 'public', 'assets', '_archive');
+  const archiveDir = path.join(PUBLIC_DIR, 'assets', '_archive');
   const originalArchives = fs.existsSync(archiveDir) ? fs.readdirSync(archiveDir) : [];
-  // Safety net: public/assets is served content, so snapshot it and put it back.
-  const assetsDir = path.join(ROOT, 'public', 'assets');
+  // Safety net: frontend/public/assets is served content, so snapshot it and put it back.
+  const assetsDir = path.join(PUBLIC_DIR, 'assets');
   const assetsSnapshot = fs.existsSync(assetsDir)
     ? fs.readdirSync(assetsDir, { withFileTypes: true })
         .filter((d) => d.isFile())
@@ -697,9 +701,9 @@ async function login(port) {
       say(`  provider reported: ${inst.info.provider}`);
       const cookie = await login(port);
 
-      const archiveDir = path.join(ROOT, 'public', 'assets', '_archive');
+      const archiveDir = path.join(PUBLIC_DIR, 'assets', '_archive');
       const archivesBefore = fs.existsSync(archiveDir) ? fs.readdirSync(archiveDir).length : 0;
-      const bundledBytes = fs.readFileSync(path.join(ROOT, 'public', 'assets', 'Vinit-Niwalkar-Resume.pdf'));
+      const bundledBytes = fs.readFileSync(path.join(PUBLIC_DIR, 'assets', 'Vinit-Niwalkar-Resume.pdf'));
 
       const pdf = makePdf('uploaded-locally');
       const post = await request(port, 'POST', '/api/admin/resume', {
@@ -726,7 +730,7 @@ async function login(port) {
         `storageProvider=${after.data && after.data.storageProvider}`);
 
       // restore the working tree exactly as it was
-      fs.writeFileSync(path.join(ROOT, 'public', 'assets', 'Vinit-Niwalkar-Resume.pdf'), bundledBytes);
+      fs.writeFileSync(path.join(PUBLIC_DIR, 'assets', 'Vinit-Niwalkar-Resume.pdf'), bundledBytes);
       const extra = archivesAfter.filter((f) => !originalArchives.includes(f));
       for (const f of extra) fs.rmSync(path.join(archiveDir, f), { force: true });
       say(`  cleaned ${extra.length} archive file(s) created by this scenario`);
@@ -737,7 +741,7 @@ async function login(port) {
     // ---------------------------------------------------------------- E ----
     if (scenarios.includes('E')) {
       hr('SCENARIO E - certificate PDFs on Vercel Blob  (the same bug, second caller)');
-      say('  certificates used to be written straight into public/certificates/, so every');
+      say('  certificates used to be written straight into frontend/public/certificates/, so every');
       say('  certificate upload failed in production exactly like the resume did.');
       await purgeVerifyCerts();
 
@@ -769,9 +773,9 @@ async function login(port) {
         `HTTP ${served.status} "${pdfLabel(served)}" ${served.buffer.length} bytes`);
 
       // ---- nothing was written into the served bundle -----------------------
-      const leaked = path.join(ROOT, 'public', 'certificates', path.basename(String(fileUrl || '')));
+      const leaked = path.join(PUBLIC_DIR, 'certificates', path.basename(String(fileUrl || '')));
       check('E5  nothing was written into the read-only deployment bundle',
-        !fileUrl || !fs.existsSync(leaked), `public/certificates/${path.basename(String(fileUrl || ''))}`);
+        !fileUrl || !fs.existsSync(leaked), `frontend/public/certificates/${path.basename(String(fileUrl || ''))}`);
 
       await stopInstance(inst).then((l) => instanceLogs.push(l));
 
@@ -837,7 +841,7 @@ async function login(port) {
     results.push({ name: 'harness completed', pass: false });
   } finally {
     if (hadBundle && !fs.existsSync(originalBundle)) fs.writeFileSync(originalBundle, originalBytes);
-    // restore public/assets to its exact pre-verification contents
+    // restore frontend/public/assets to its exact pre-verification contents
     if (fs.existsSync(assetsDir)) {
       for (const d of fs.readdirSync(assetsDir, { withFileTypes: true })) {
         if (d.isFile() && !assetsSnapshot.some((s) => s.name === d.name)) {
