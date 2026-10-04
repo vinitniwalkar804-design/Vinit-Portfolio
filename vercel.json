@@ -4,18 +4,61 @@
   "builds": [
     {
       "src": "backend/server.js",
-      "use": "@vercel/node",
-      "config": {
-        "includeFiles": [
-          "frontend/public/**",
-          "frontend/src/**",
-          "frontend/index.html",
-          "database/seeds/**"
-        ]
-      }
+      "use": "@vercel/node"
     }
   ],
-  "routes": [
-    { "src": "/(.*)", "dest": "backend/server.js" }
+  "rewrites": [
+    {
+      "source": "/api/(.*)",
+      "destination": "/backend/server.js"
+    },
+    {
+      "source": "/admin(.*)",
+      "destination": "/backend/server.js"
+    },
+    {
+      "source": "/vinit-control(.*)",
+      "destination": "/backend/server.js"
+    },
+    {
+      "source": "/assets/Vinit-Niwalkar-Resume.pdf",
+      "destination": "/backend/server.js"
+    },
+    {
+      "source": "/css/(.*)",
+      "destination": "/frontend/src/css/$1"
+    },
+    {
+      "source": "/js/(.*)",
+      "destination": "/frontend/src/js/$1"
+    },
+    {
+      "source": "/certificates/(.*)",
+      "destination": "/frontend/public/certificates/$1"
+    },
+    {
+      "source": "/images/(.*)",
+      "destination": "/frontend/public/images/$1"
+    },
+    {
+      "source": "/assets/(.*)",
+      "destination": "/frontend/public/assets/$1"
+    },
+    {
+      "source": "/favicon.svg",
+      "destination": "/frontend/public/favicon.svg"
+    },
+    {
+      "source": "/robots.txt",
+      "destination": "/frontend/public/robots.txt"
+    },
+    {
+      "source": "/(.*\\..*)",
+      "destination": "/frontend/$1"
+    },
+    {
+      "source": "/(.*)",
+      "destination": "/frontend/index.html"
+    }
   ]
 }
